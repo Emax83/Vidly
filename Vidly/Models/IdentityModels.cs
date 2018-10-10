@@ -18,23 +18,7 @@ namespace Vidly.Models
 
             return userIdentity;
         }
-
-        //gateway to database
-        public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
-        {
-            public DbSet<Customer> Customers { get; set; }
-
-            public ApplicationDbContext()
-                :base("DbConnection",throwIfV1Schema:false)
-            {
-                
-            }
-
-            public static ApplicationDbContext Create()
-            {
-                return new ApplicationDbContext();
-            }
-        }
-
     }
+
+   
 }

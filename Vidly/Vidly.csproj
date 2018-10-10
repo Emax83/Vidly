@@ -46,10 +46,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.2\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
@@ -160,14 +160,44 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CustomersController.cs" />
+    <Compile Include="Controllers\GenresController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MoviesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastracture\ApplicationDbContext.cs" />
+    <Compile Include="Migrations\201810101458097_PopulateMembershiTypes.cs" />
+    <Compile Include="Migrations\201810101458097_PopulateMembershiTypes.Designer.cs">
+      <DependentUpon>201810101458097_PopulateMembershiTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810101506178_applyannotations.cs" />
+    <Compile Include="Migrations\201810101506178_applyannotations.Designer.cs">
+      <DependentUpon>201810101506178_applyannotations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810101514355_CreateCustomers.cs" />
+    <Compile Include="Migrations\201810101514355_CreateCustomers.Designer.cs">
+      <DependentUpon>201810101514355_CreateCustomers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810101547532_CreateMovies.cs" />
+    <Compile Include="Migrations\201810101547532_CreateMovies.Designer.cs">
+      <DependentUpon>201810101547532_CreateMovies.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810101550548_CreateMovie.cs" />
+    <Compile Include="Migrations\201810101550548_CreateMovie.Designer.cs">
+      <DependentUpon>201810101550548_CreateMovie.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810101601456_AddedGenres.cs" />
+    <Compile Include="Migrations\201810101601456_AddedGenres.Designer.cs">
+      <DependentUpon>201810101601456_AddedGenres.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Customer.cs" />
+    <Compile Include="Models\Genre.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\MembershipType.cs" />
     <Compile Include="Models\Movie.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -218,11 +248,16 @@
     <Content Include="Views\Movies\Random.cshtml" />
     <Content Include="Views\Shared\_NavBar.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Customers\Index.cshtml" />
+    <Content Include="Views\Customers\Details.cshtml" />
+    <Content Include="Views\Movies\Index.cshtml" />
+    <Content Include="Views\Movies\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\Images\favicons\" />
     <Folder Include="Views\Account\" />
+    <Folder Include="Views\Genres\" />
     <Folder Include="Views\Manage\" />
   </ItemGroup>
   <ItemGroup>
@@ -237,6 +272,26 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201810101458097_PopulateMembershiTypes.resx">
+      <DependentUpon>201810101458097_PopulateMembershiTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810101506178_applyannotations.resx">
+      <DependentUpon>201810101506178_applyannotations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810101514355_CreateCustomers.resx">
+      <DependentUpon>201810101514355_CreateCustomers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810101547532_CreateMovies.resx">
+      <DependentUpon>201810101547532_CreateMovies.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810101550548_CreateMovie.resx">
+      <DependentUpon>201810101550548_CreateMovie.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810101601456_AddedGenres.resx">
+      <DependentUpon>201810101601456_AddedGenres.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
