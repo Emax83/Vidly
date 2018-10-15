@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Web;
 using System.Web.Mvc;
 using Vidly.Infrastracture;
+using Vidly.Models;
 
 namespace Vidly.Controllers
 {
@@ -27,7 +28,7 @@ namespace Vidly.Controllers
         // GET: Customers
         public ViewResult Index()
         {
-            var customers = _context.Customers;
+            var customers = _context.Customers.Include(c => c.MembershipType);
             return View(customers);
         }
 
@@ -37,6 +38,30 @@ namespace Vidly.Controllers
             if (customer == null)
                 return HttpNotFound();
 
+            return View(customer);
+        }
+
+
+        [HttpGet]
+        public ActionResult Create()
+        {
+            return View(new Customer());
+        }
+
+        [HttpPost]
+        [ActionName("Create")]
+        [ValidateAntiForgeryToken]
+        public ActionResult SaveNew()
+        {
+            Customer customer = new Customer();
+
+            if (ModelState.IsValid)
+            {
+
+                TempData["Message"] = "Created Successfull";
+                return RedirectToAction("Details", new { id = customer.Id });
+
+            }
             return View(customer);
         }
 

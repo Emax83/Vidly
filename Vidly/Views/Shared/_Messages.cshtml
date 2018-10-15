@@ -1,0 +1,24 @@
+﻿<div>
+
+</div>
+
+@if (TempData["Message"] != null)
+{
+    <div class="panel panel-default">
+        @TempData["Message"].ToString()
+    </div>
+}
+
+@if (TempData["Warning"] != null)
+{
+    <div class="panel panel-warning">
+        @TempData["Warning"].ToString()
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="panel panel-danger">
+        @TempData["Error"].ToString()
+    </div>
+}

@@ -197,6 +197,18 @@
     <Compile Include="Migrations\201810101844138_MembershipName.Designer.cs">
       <DependentUpon>201810101844138_MembershipName.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201810151649468_birthdate.cs" />
+    <Compile Include="Migrations\201810151649468_birthdate.Designer.cs">
+      <DependentUpon>201810151649468_birthdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810151654072_birthdatenullable.cs" />
+    <Compile Include="Migrations\201810151654072_birthdatenullable.Designer.cs">
+      <DependentUpon>201810151654072_birthdatenullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810151707223_MovieDetails.cs" />
+    <Compile Include="Migrations\201810151707223_MovieDetails.Designer.cs">
+      <DependentUpon>201810151707223_MovieDetails.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Genre.cs" />
@@ -256,6 +268,8 @@
     <Content Include="Views\Customers\Details.cshtml" />
     <Content Include="Views\Movies\Index.cshtml" />
     <Content Include="Views\Movies\Details.cshtml" />
+    <Content Include="Views\Shared\_Messages.cshtml" />
+    <Content Include="Views\Customers\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -298,6 +312,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201810101844138_MembershipName.resx">
       <DependentUpon>201810101844138_MembershipName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810151649468_birthdate.resx">
+      <DependentUpon>201810151649468_birthdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810151654072_birthdatenullable.resx">
+      <DependentUpon>201810151654072_birthdatenullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810151707223_MovieDetails.resx">
+      <DependentUpon>201810151707223_MovieDetails.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
