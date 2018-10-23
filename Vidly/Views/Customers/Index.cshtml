@@ -5,11 +5,18 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Customers</h2>
+<h2>
+    Customers
+
+    
+</h2>
 
 @if (!Model.Any())
 {
     <p>We don't have any customer yet</p>
+    <p>
+        @Html.ActionLink("Create New", "Create", "Customers", new { }, new { @class = "btn btn-primary" })
+    </p>
 }
 else
 {
@@ -17,10 +24,13 @@ else
         <tr>
             <th>
                 Customer
-                @Html.ActionLink("Create New", "Create", "Customers", new {  }, null)
+
             </th>
             <th>Membership Type</th>
             <th>Discount Rate</th>
+            <th>
+                @Html.ActionLink("Create New", "Create", "Customers")
+            </th>
         </tr>
         @foreach (var customer in Model)
         {
@@ -34,8 +44,12 @@ else
             <td>
                 @customer.MembershipType.DiscountRate %
             </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", "Customers", new { id = customer.Id }, null)
+            </td>
         </tr>
         }
     </table>
+
 }
 

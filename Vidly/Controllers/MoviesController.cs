@@ -7,22 +7,24 @@ using System.Web.Mvc;
 using Vidly.Infrastracture;
 using Vidly.Models;
 using Vidly.ViewModels;
+using Vidly.Helpers;
+using System.Data.Entity.Validation;
 
 namespace Vidly.Controllers
 {
     public class MoviesController : Controller
     {
 
-        private ApplicationDbContext dbContext;
+        private ApplicationDbContext _dbContext;
 
         public MoviesController()
         {
-            dbContext = new ApplicationDbContext();
+            _dbContext = new ApplicationDbContext();
         }
 
         protected override void Dispose(bool disposing)
         {
-            dbContext.Dispose();
+            _dbContext.Dispose();
             base.Dispose(disposing);
         }
 
@@ -38,7 +40,7 @@ namespace Vidly.Controllers
                 sortBy = "Name";
             }
 
-            var movies = dbContext.Movies.Include(c=> c.Genre).ToList();
+            var movies = _dbContext.Movies.Include(c=> c.Genre).ToList();
 
             //return Content(string.Format("PageIngex={0}&SortBy={1}",pageIndex,sortBy));
             return View(movies);
@@ -47,7 +49,7 @@ namespace Vidly.Controllers
 
         public ActionResult Details(int id)
         {
-            var movie = dbContext.Movies.SingleOrDefault(c => c.Id == id);
+            var movie = _dbContext.Movies.Include("Genre").SingleOrDefault(c => c.Id == id);
             if (movie == null)
                 return HttpNotFound();
 
@@ -85,9 +87,138 @@ namespace Vidly.Controllers
             //return new EmptyResult();
         }
 
-        public ActionResult Edit(int id)
+        // Movies/Create
+        [HttpGet]
+        public ActionResult Create()
         {
-            return Content("ID=" + id);
+            ViewModels.MovieViewModel viewModel = new MovieViewModel();
+            viewModel.Genres = _dbContext.Genres.ToList();
+            viewModel.Movie = new Movie();
+            return View("Edit",viewModel);
+        }
+
+        [HttpPost]
+        [ActionName("Create")]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreatePost([Bind(Exclude = "Id")] MovieViewModel viewModel)
+        {
+            viewModel.Genres = _dbContext.Genres.ToList();
+            if (ModelState.IsValid)
+            {
+                Movie newMovie = new Movie();
+
+                Mapper.Map(viewModel.Movie, newMovie);
+
+                newMovie.DateAdded = DateTime.Now;
+
+                _dbContext.Movies.Add(newMovie);
+
+                _dbContext.SaveChanges();
+
+                return RedirectToAction("Details",new { id= newMovie.Id});
+            }
+            return View(viewModel);
+        }
+
+
+        // Movies/Edit/1
+        [HttpGet]
+        public ActionResult Edit(int? id)
+        {
+            Movie movie = null;
+
+            if (id.HasValue)
+            {
+                movie = _dbContext.Movies.SingleOrDefault(c => c.Id == id);
+                if (movie == null)
+                    return HttpNotFound();
+            }
+            else
+            {
+                movie = new Movie();
+            }
+            MovieViewModel viewModel = new MovieViewModel
+            {
+                Movie = movie,
+                Genres = _dbContext.Genres.ToList()
+            };
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ActionName("Edit")]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditPost(int id, MovieViewModel viewModel)
+        {
+            viewModel.Genres = _dbContext.Genres.ToList();
+            if (ModelState.IsValid)
+            {
+                var dbMovie = _dbContext.Movies.Single(c => c.Id == id);
+
+                Mapper.Map(viewModel.Movie, dbMovie);
+
+                TryUpdateModel(dbMovie, "", new string[] { "Name", "GenreId", "NumberInStock", "Price" ,"ReleaseDate"});
+
+                _dbContext.SaveChanges();
+
+                TempData["Message"] = "Saved successfull";
+
+                return RedirectToAction("Details", new { id = id });
+            }
+            TempData["Warning"] = "Something going wrong";
+            return View(viewModel);
+        }
+
+        [HttpGet]
+        public ActionResult Save(int? id)
+        {
+            return RedirectToAction("Edit", new { id = id });
+        }
+
+        [HttpPost]
+        [ActionName("Save")]
+        [ValidateAntiForgeryToken]
+        public ActionResult SavePost(MovieViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                if (viewModel.Movie.Id == 0)
+                {
+                    _dbContext.Movies.Add(viewModel.Movie);
+                }
+                else
+                {
+                    var moviedb = _dbContext.Movies.Single(c => c.Id == viewModel.Movie.Id);
+
+                    Vidly.Helpers.Mapper.Map(viewModel.Movie, moviedb);
+
+                    TryUpdateModel(moviedb, "", new string[] { "Name", "GenreId", "ReleaseDate", "DateAdded","Price", "NumberInStock" });
+                }
+
+                _dbContext.SaveChanges();
+
+                //TempData["Message"] = "Movie saved Successfull";
+                return RedirectToAction("Index", "Movies");
+
+            }
+            return View("Edit", viewModel);
+        }
+
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ActionName("Delete")]
+        public ActionResult DeletePost(int id)
+        {
+            var movie = _dbContext.Movies.SingleOrDefault(c => c.Id == id);
+            if (movie == null)
+                return HttpNotFound();
+
+            _dbContext.Movies.Remove(movie);
+            _dbContext.SaveChanges();
+
+            return RedirectToAction("Index");
         }
 
         //spostato da RoutConfig.cs

@@ -1,0 +1,87 @@
+﻿@model Vidly.ViewModels.MovieViewModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit Movie</h2>
+
+@using (Html.BeginForm("Save","Movies",FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+
+    @Html.ValidationSummary(true, "Please fix errors", new { @class = "text-danger" })
+
+    @Html.HiddenFor(model => model.Movie.Id)
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Movie.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Movie.Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Movie.Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Movie.ReleaseDate, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.Movie.ReleaseDate, "{0:dd/MM/yyyy}", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Movie.ReleaseDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Movie.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Movie.Price, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Movie.Price, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Movie.NumberInStock, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Movie.NumberInStock, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Movie.NumberInStock, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Movie.GenreId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.Movie.GenreId, new SelectList(Model.Genres, "Id", "Name"), "Select Genre", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Movie.GenreId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </div>
+</div>
+}
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary" })
+            </div>
+        </div>
+        @if (Model.Movie != null && Model.Movie.Id > 0)
+        {
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    @using (Html.BeginForm("Delete", "Movies", new { id = Model.Movie.Id }, FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken();
+                        @Html.HiddenFor(model => model.Movie.Id)
+                        <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure?')" />
+                    }
+                </div>
+            </div>
+        }
+
+    </div>

@@ -1,0 +1,85 @@
+﻿@model Vidly.ViewModels.CustomerViewModel
+
+
+@{
+    ViewBag.Title = "Edit Customer";
+}
+
+
+
+@using (Html.BeginForm("Save", "Customers", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+
+
+<div class="form-horizontal">
+    <h2>Edit Customer</h2>
+    <hr />
+
+    @Html.ValidationSummary(true, "Please fix errors", new { @class = "text-danger" })
+
+    @Html.HiddenFor(model => model.Customer.Id)
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Customer.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Customer.Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Customer.Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Customer.BirthDate, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.Customer.BirthDate, "{0:dd/MM/yyyy}", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Customer.BirthDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Customer.MembershipTypeId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.Customer.MembershipTypeId, new SelectList(Model.MembershipTypes, "id", "Name"), "Select membershiptype", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Customer.MembershipTypeId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="checkbox">
+        <label>
+            @Html.CheckBoxFor(model => model.Customer.IsSubscribedToNewsletter) Suscribe to newsletter?
+        </label>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </div>
+
+</div>
+}
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary" })
+            </div>
+        </div>
+        @if (Model.Customer != null && Model.Customer.Id > 0)
+        {
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    @using (Html.BeginForm("Delete", "Customers", new { id = Model.Customer.Id }, FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken();
+                        @Html.HiddenFor(model => model.Customer.Id)
+                        <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure?')" />
+                    }
+                </div>
+            </div>
+        }
+
+    </div>
