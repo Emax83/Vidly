@@ -13,29 +13,37 @@ namespace Vidly.Controllers
     public class CustomersController : Controller
     {
 
-        private ApplicationDbContext _context;
+        //private ApplicationDbContext _context;
 
-        public CustomersController()
+        //public CustomersController()
+        //{
+        //    _context = new ApplicationDbContext();
+        //}
+        //protected override void Dispose(bool disposing)
+        //{
+        //    _context.Dispose();
+        //    base.Dispose(disposing);
+        //}
+
+        private readonly ICustomerService _context;
+
+        public CustomersController(ICustomerService service)
         {
-            _context = new ApplicationDbContext();
+            _context = service;// = new ApplicationDbContext();
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            _context.Dispose();
-            base.Dispose(disposing);
-        }
+       
 
         // GET: Customers
         public ViewResult Index()
         {
-            var customers = _context.Customers.Include(c => c.MembershipType);
+            var customers = _context.GetCustomers();
             return View(customers);
         }
 
         public ActionResult Details(int id)
         {
-            var customer = _context.Customers.Include(c => c.MembershipType).SingleOrDefault(c => c.Id == id);
+            var customer = _context.GetCustomer(id);
             if (customer == null)
                 return HttpNotFound();
 
@@ -44,13 +52,13 @@ namespace Vidly.Controllers
 
         public ActionResult Edit(int id)
         {
-            Customer customer = _context.Customers.SingleOrDefault(c => c.Id == id);
+            Customer customer = _context.GetCustomer(id);
             if (customer == null)
                 return HttpNotFound();
             var viewmodel = new CustomerViewModel
             {
                 Customer = customer,
-                MembershipTypes = _context.MembershipTypes.ToList()
+                MembershipTypes = _context.GetMembershipTypes()
             };
 
             return View("Edit", viewmodel);
@@ -59,7 +67,7 @@ namespace Vidly.Controllers
         [HttpGet]
         public ActionResult Create()
         {
-            var membershipTypes = _context.MembershipTypes.ToList();
+            var membershipTypes = _context.GetMembershipTypes();
             var viewmodel = new CustomerViewModel()
             {
                 Customer = new Customer(),
@@ -75,7 +83,7 @@ namespace Vidly.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Save(CustomerViewModel viewModel)
         {
-            viewModel.MembershipTypes = _context.MembershipTypes.ToList();
+            viewModel.MembershipTypes = _context.GetMembershipTypes();
 
             if (ModelState.IsValid)
             {
@@ -85,15 +93,17 @@ namespace Vidly.Controllers
 
                 if (viewModel.Customer.Id == 0)
                 {
-                    _context.Customers.Add(viewModel.Customer);
+                        _context.AddCustomer(viewModel.Customer);
                 }
                 else
                 {
-                    var custdb = _context.Customers.Single(c => c.Id == viewModel.Customer.Id);
+                        //var custdb = _context.Customers.Single(c => c.Id == viewModel.Customer.Id);
 
-                    Vidly.Helpers.Mapper.Map(viewModel.Customer, custdb);
+                        //Vidly.Helpers.Mapper.Map(viewModel.Customer, custdb);
 
-                    TryUpdateModel(custdb, "", new string[] { "Name", "MembershipTypeId", "IsSubscribedToNewsletter", "BirthDate" } );
+                        //TryUpdateModel(custdb, "", new string[] { "Name", "MembershipTypeId", "IsSubscribedToNewsletter", "BirthDate" } );
+
+                        _context.UpdateCustomer(viewModel.Customer);
 
                     //custdb.Name = viewModel.Customer.Name;
                     //custdb.MembershipTypeId = viewModel.Customer.MembershipTypeId;
@@ -102,7 +112,7 @@ namespace Vidly.Controllers
 
                 }
 
-                _context.SaveChanges();
+                //_context.SaveChanges();
 
                 TempData["Message"] = "Customer saved Successfull";
                 return RedirectToAction("Index", "Customers");
@@ -122,12 +132,13 @@ namespace Vidly.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeletePost(int id)
         {
-            Customer customer = _context.Customers.Single(c => c.Id == id);
-            if (customer == null)
-                return HttpNotFound();
+            //Customer customer = _context.DeleteCustomer
+            //if (customer == null)
+            //    return HttpNotFound();
 
-            _context.Customers.Remove(customer);
-            _context.SaveChanges();
+            //_context.Customers.Remove(customer);
+            //_context.SaveChanges();
+            _context.DeleteCustomer(id);
 
             return RedirectToAction("Index", "Customers");
         }

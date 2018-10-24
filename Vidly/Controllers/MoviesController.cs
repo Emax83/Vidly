@@ -15,18 +15,18 @@ namespace Vidly.Controllers
     public class MoviesController : Controller
     {
 
-        private ApplicationDbContext _dbContext;
+        private readonly IMovieService _movieService;
 
-        public MoviesController()
+        public MoviesController(IMovieService service)
         {
-            _dbContext = new ApplicationDbContext();
+            _movieService = service;// = new ApplicationDbContext();
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            _dbContext.Dispose();
-            base.Dispose(disposing);
-        }
+        //protected override void Dispose(bool disposing)
+        //{
+        //    _dbContext.Dispose();
+        //    base.Dispose(disposing);
+        //}
 
         // GET: /Movies
         public ActionResult Index(int? pageIndex, string sortBy)
@@ -40,7 +40,7 @@ namespace Vidly.Controllers
                 sortBy = "Name";
             }
 
-            var movies = _dbContext.Movies.Include(c=> c.Genre).ToList();
+            var movies = _movieService.GetMovies();//.Movies.Include(c=> c.Genre).ToList();
 
             //return Content(string.Format("PageIngex={0}&SortBy={1}",pageIndex,sortBy));
             return View(movies);
@@ -49,7 +49,7 @@ namespace Vidly.Controllers
 
         public ActionResult Details(int id)
         {
-            var movie = _dbContext.Movies.Include("Genre").SingleOrDefault(c => c.Id == id);
+            var movie = _movieService.GetMovie(id);
             if (movie == null)
                 return HttpNotFound();
 
@@ -92,7 +92,7 @@ namespace Vidly.Controllers
         public ActionResult Create()
         {
             ViewModels.MovieViewModel viewModel = new MovieViewModel();
-            viewModel.Genres = _dbContext.Genres.ToList();
+            viewModel.Genres = _movieService.GetGenres();
             viewModel.Movie = new Movie();
             return View("Edit",viewModel);
         }
@@ -102,7 +102,7 @@ namespace Vidly.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreatePost([Bind(Exclude = "Id")] MovieViewModel viewModel)
         {
-            viewModel.Genres = _dbContext.Genres.ToList();
+            viewModel.Genres = _movieService.GetGenres();
             if (ModelState.IsValid)
             {
                 Movie newMovie = new Movie();
@@ -111,9 +111,7 @@ namespace Vidly.Controllers
 
                 newMovie.DateAdded = DateTime.Now;
 
-                _dbContext.Movies.Add(newMovie);
-
-                _dbContext.SaveChanges();
+                _movieService.AddMovie(newMovie);
 
                 return RedirectToAction("Details",new { id= newMovie.Id});
             }
@@ -129,7 +127,7 @@ namespace Vidly.Controllers
 
             if (id.HasValue)
             {
-                movie = _dbContext.Movies.SingleOrDefault(c => c.Id == id);
+                movie = _movieService.GetMovie(id.Value);
                 if (movie == null)
                     return HttpNotFound();
             }
@@ -140,7 +138,7 @@ namespace Vidly.Controllers
             MovieViewModel viewModel = new MovieViewModel
             {
                 Movie = movie,
-                Genres = _dbContext.Genres.ToList()
+                Genres = _movieService.GetGenres()
             };
             return View(viewModel);
         }
@@ -150,16 +148,16 @@ namespace Vidly.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditPost(int id, MovieViewModel viewModel)
         {
-            viewModel.Genres = _dbContext.Genres.ToList();
+            viewModel.Genres = _movieService.GetGenres();
             if (ModelState.IsValid)
             {
-                var dbMovie = _dbContext.Movies.Single(c => c.Id == id);
+                var dbMovie = _movieService.GetMovie(id);
 
                 Mapper.Map(viewModel.Movie, dbMovie);
 
-                TryUpdateModel(dbMovie, "", new string[] { "Name", "GenreId", "NumberInStock", "Price" ,"ReleaseDate"});
+                TryUpdateModel(dbMovie, "", new string[] { "Name", "GenreId", "NumberInStock", "Price", "ReleaseDate" });
 
-                _dbContext.SaveChanges();
+                _movieService.UpdateMovie(dbMovie);
 
                 TempData["Message"] = "Saved successfull";
 
@@ -184,18 +182,21 @@ namespace Vidly.Controllers
             {
                 if (viewModel.Movie.Id == 0)
                 {
-                    _dbContext.Movies.Add(viewModel.Movie);
+                    //_dbContext.Movies.Add(viewModel.Movie);
+                    _movieService.AddMovie(viewModel.Movie);
                 }
                 else
                 {
-                    var moviedb = _dbContext.Movies.Single(c => c.Id == viewModel.Movie.Id);
+                    // _dbContext.Movies.Single(c => c.Id == viewModel.Movie.Id);
+                    var moviedb = _movieService.GetMovie(viewModel.Movie.Id);
 
                     Vidly.Helpers.Mapper.Map(viewModel.Movie, moviedb);
 
                     TryUpdateModel(moviedb, "", new string[] { "Name", "GenreId", "ReleaseDate", "DateAdded","Price", "NumberInStock" });
+                    _movieService.UpdateMovie(moviedb);
                 }
 
-                _dbContext.SaveChanges();
+                //_dbContext.SaveChanges();
 
                 //TempData["Message"] = "Movie saved Successfull";
                 return RedirectToAction("Index", "Movies");
@@ -211,12 +212,7 @@ namespace Vidly.Controllers
         [ActionName("Delete")]
         public ActionResult DeletePost(int id)
         {
-            var movie = _dbContext.Movies.SingleOrDefault(c => c.Id == id);
-            if (movie == null)
-                return HttpNotFound();
-
-            _dbContext.Movies.Remove(movie);
-            _dbContext.SaveChanges();
+            _movieService.DeleteMovie(id);
 
             return RedirectToAction("Index");
         }
