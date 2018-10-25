@@ -10,60 +10,59 @@ using Vidly.Models;
 
 namespace Vidly.Controllers.Api
 {
-    public class CustomersController : ApiController
+    public class MoviesController : ApiController
     {
 
-        private readonly ICustomerService _customerService;
-        public CustomersController(ICustomerService service)
+        private readonly IMovieService _movieService;
+        public MoviesController(IMovieService service)
         {
-            _customerService = service;
+            _movieService = service;
         }
 
         //GET /API/customers/GetCustomers
         [HttpGet]
-        public IEnumerable<Customer> GetCustomers()
+        public IEnumerable<Movie> GetMovies()
         {
-            return _customerService.GetCustomers();
+            return _movieService.GetMovies();
         }
 
         //GET /API/customers/GetCustomer
         [HttpGet]
-        public Customer GetCustomer(int id)
+        public Movie GetMovie(int id)
         {
-            var customer = _customerService.GetCustomer(id);
-            if (customer == null)
+            var Movie = _movieService.GetMovie(id);
+            if (Movie == null)
                 throw new HttpResponseException(HttpStatusCode.NotFound);
 
-            return customer;
+            return Movie;
         }
 
         //POST /API/customers/CreateCustomer
         [HttpPost]
-        public Customer CreateCustomer(Customer customer)
+        public Movie CreateMovie(Movie movie)
         {
             if (!ModelState.IsValid)
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
 
-            _customerService.AddCustomer(customer);
-
-            return customer;
+            _movieService.AddMovie(movie);
+            return movie;
         }
 
         //PUT /API/customers/Update
         [HttpPut]
-        public void UpdateCustomer(Customer customer)
+        public void UpdateMovie(Movie movie)
         {
             if (!ModelState.IsValid)
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
 
-            if (!_customerService.UpdateCustomer(customer))
+            if (!_movieService.UpdateMovie(movie))
                 throw new HttpResponseException(HttpStatusCode.NotFound);
         }
 
         //DELETE /API/customers/Delete/1
-        public void DeleteCustomer(int id)
+        public void DeleteMovie(int id)
         {
-            if (!_customerService.DeleteCustomer(id))
+            if (!_movieService.DeleteMovie(id))
                 throw new HttpResponseException(HttpStatusCode.NotFound);
         }
 

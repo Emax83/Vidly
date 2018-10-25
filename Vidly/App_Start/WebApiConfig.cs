@@ -1,6 +1,9 @@
-﻿using System.Web.Http;
+﻿using Newtonsoft.Json.Serialization;
+using System.Web.Http;
+using System.Web.Http.Dependencies;
 using Unity;
 using Unity.Injection;
+using Unity.Mvc5;
 using Vidly.Infrastracture;
 using Vidly.Repository;
 
@@ -10,13 +13,19 @@ namespace Vidly
     {
         public static void Register(HttpConfiguration config)
         {
+
+            /* to camelcase json result: using Newtonsoft.Json.Serialization; */
+            var settings = config.Formatters.JsonFormatter.SerializerSettings;
+            settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            settings.Formatting = Newtonsoft.Json.Formatting.Indented;
+
             ApplicationDbContext dbContext = new ApplicationDbContext();
             //DBHelper dBHelper = new DBHelper(connectionstring);
 
             /* DEPENDENCY INJECTION PER WEB API */
             var container = new UnityContainer();
             container.RegisterType<ICustomerService, EFCustomerService>();
-            //container.RegisterType<ICustomerService, EFCustomerService>(new InjectionConstructor(dbContext));
+            container.RegisterType<IMovieService, EFMovieService>();
 
             config.DependencyResolver = new UnityResolver(container);
 

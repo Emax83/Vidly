@@ -15,5 +15,18 @@ namespace Vidly.Extensions
             return val.Trim();
 
         }
+
+        public static string ToCamelCase(this string val)
+        {
+
+            return (val);
+        }
+
+        public static string ToFirstLetterUpperCase(this string val)
+        {
+
+            return (val);
+        }
+
     }
 }
