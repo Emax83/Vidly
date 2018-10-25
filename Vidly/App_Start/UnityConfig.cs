@@ -6,8 +6,7 @@ using Unity.Injection;
 using Unity.Mvc5;
 using Unity.ServiceLocation;
 using Vidly.Infrastracture;
-using Vidly.Models;
-
+using Vidly.Repository;
 
 namespace Vidly
 {
@@ -21,8 +20,8 @@ namespace Vidly
             //tutti i componmenti che ti servono nei controller.
             //crea dei servizi che implementino delle interfacce.
             // nel costruttore dei controller chiedi le interfacce, unity passerà il componente che le implemente.
+            /* PER DEPENDENCY INJECTION WEB API andare in WebapiConfig.cs a registrare i componenti */
 
-           
             RegisterRepositoryServices(container);
 
             // e.g. container.RegisterType<ITestService, TestService>();
@@ -42,7 +41,8 @@ namespace Vidly
             container.RegisterType<IMovieService, EFMovieService>(new InjectionConstructor(dbContext));
             container.RegisterType<ICustomerService, EFCustomerService>(new InjectionConstructor(dbContext));
             //container.RegisterType<IMovieService, DBMovieService>(new InjectionConstructor(dBHelper));
-
         }
+
+
     }
 }

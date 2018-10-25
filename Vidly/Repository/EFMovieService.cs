@@ -4,8 +4,9 @@ using System.Linq;
 using Vidly.Models;
 using System.Data.Entity;
 using Vidly.Helpers;
+using Vidly.Infrastracture;
 
-namespace Vidly.Infrastracture
+namespace Vidly.Repository
 {
     public class EFMovieService : IMovieService
     {

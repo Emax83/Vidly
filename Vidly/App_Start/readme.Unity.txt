@@ -23,3 +23,5 @@ public class MvcApplication : System.Web.HttpApplication
 5) nel costruttore delle classi chiedi i parametri che ti servono.
 
 6) in unity registra i servizi e passa i parametri al costruttore.
+
+7) per web api utilizzare "UnityResolver.cs e registrare i componenti in WebApiConfig.cs"

@@ -13,26 +13,12 @@ namespace Vidly.Controllers
     public class CustomersController : Controller
     {
 
-        //private ApplicationDbContext _context;
-
-        //public CustomersController()
-        //{
-        //    _context = new ApplicationDbContext();
-        //}
-        //protected override void Dispose(bool disposing)
-        //{
-        //    _context.Dispose();
-        //    base.Dispose(disposing);
-        //}
-
         private readonly ICustomerService _context;
-
         public CustomersController(ICustomerService service)
         {
             _context = service;// = new ApplicationDbContext();
         }
 
-       
 
         // GET: Customers
         public ViewResult Index()

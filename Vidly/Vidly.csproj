@@ -198,6 +198,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
+    <Compile Include="App_Start\UnityResolver.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Api\CustomersController.cs" />
@@ -205,6 +206,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MoviesController.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -212,9 +214,9 @@
     <Compile Include="Helpers\Min18YearsValidation.cs" />
     <Compile Include="Infrastracture\ApplicationDbContext.cs" />
     <Compile Include="Infrastracture\DBHelper.cs" />
-    <Compile Include="Infrastracture\DBMovieService.cs" />
-    <Compile Include="Infrastracture\EFCustomerService.cs" />
-    <Compile Include="Infrastracture\EFMovieService.cs" />
+    <Compile Include="Repository\DBMovieService.cs" />
+    <Compile Include="Repository\EFCustomerService.cs" />
+    <Compile Include="Repository\EFMovieService.cs" />
     <Compile Include="Infrastracture\ICustomerService.cs" />
     <Compile Include="Infrastracture\IMovieService.cs" />
     <Compile Include="Migrations\201810101458097_PopulateMembershiTypes.cs" />

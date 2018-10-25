@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Vidly.Models;
 using System.Data.Entity;
-using Vidly.Helpers;
+using Vidly.Infrastracture;
 
-namespace Vidly.Infrastracture
+namespace Vidly.Repository
 {
     public class EFCustomerService : ICustomerService
     {
@@ -25,6 +25,8 @@ namespace Vidly.Infrastracture
         public bool UpdateCustomer(Customer customer)
         {
             Customer dbCust = GetCustomer(customer.Id);
+            if (dbCust == null)
+                throw new ArgumentException("Not Found");
 
             dbCust.BirthDate = customer.BirthDate;
             dbCust.IsSubscribedToNewsletter = customer.IsSubscribedToNewsletter;
@@ -61,7 +63,5 @@ namespace Vidly.Infrastracture
         {
             return _dbContext.Customers.Include(c => c.MembershipType).ToList();
         }
-
-        
     }
 }
