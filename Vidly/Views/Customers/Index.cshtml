@@ -8,7 +8,7 @@
 <h2>
     Customers
 
-    
+
 </h2>
 
 @if (!Model.Any())
@@ -20,36 +20,89 @@
 }
 else
 {
-    <table class="table table-bordered table-hover">
-        <tr>
-            <th>
-                Customer
+    <table class="table table-bordered table-hover" id="table-customers">
+        <thead>
+            <tr>
+                <th>
+                    Customer
 
-            </th>
-            <th>Membership Type</th>
-            <th>Discount Rate</th>
-            <th>
-                @Html.ActionLink("Create New", "Create", "Customers")
-            </th>
-        </tr>
-        @foreach (var customer in Model)
-        {
-        <tr>
-            <td>
-                @Html.ActionLink(customer.Name, "Details", "Customers", new { id = customer.Id }, null)
-            </td>
-            <td>
-                @customer.MembershipType.Name %
-            </td>
-            <td>
-                @customer.MembershipType.DiscountRate %
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", "Customers", new { id = customer.Id }, null)
-            </td>
-        </tr>
-        }
+                </th>
+                <th>Membership Type</th>
+                <th>Discount Rate</th>
+                <th>
+                    @Html.ActionLink("Create New", "Create", "Customers")
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var customer in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink(customer.Name, "Details", "Customers", new { id = customer.Id }, null)
+                    </td>
+                    <td>
+                        @customer.MembershipType.Name %
+                    </td>
+                    <td>
+                        @customer.MembershipType.DiscountRate %
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", "Customers", new { id = customer.Id }, null)
+                        <button class="btn-link js-delete" data-customer-id="@customer.Id">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
     </table>
+    @section scripts{
 
+        <script>
+            $(document).ready(function () {
+
+                //https://datatables.net/download/
+                $('#table-customers').DataTable();
+                //$('#table-customers').DataTable({
+                //    ajax: {
+                //        url: "/api/customers/",
+                //        dataSrc: ""
+                //    },
+                //    columns: [
+                //        {
+                //            data: "name",
+                //            render: function (data, type, customer) {
+                //                return "<a href='/customers/edit/'" + customer.id + "'>" + customer.name + "</a>";
+                //            }
+                //        },
+                //        {
+                //            data: "name"
+                //        },
+                //        {
+                //            data: "id",
+                //            render: function (data) {
+                //                return "<button class='btn-link js-delete' data-customer-id=" + data + ">Delete</button>";
+                //            }
+                //        }
+                //    ]
+                //});
+
+                $("#table-customers").on("click", ".js-delete", function () {
+                    var button = $(this);
+                    if (confirm("Are you sure?")) {
+                        $.ajax({
+                            url: "/api/customers/" + $(this).attr("data-customer-id"),
+                            method: "DELETE",
+                            success: function () {
+                                button.parents("tr").remove();
+                            },
+                            error: function () { alert('Error'); }
+                        });
+
+                    }
+                });
+            });
+
+        </script>
+    }
 }
 

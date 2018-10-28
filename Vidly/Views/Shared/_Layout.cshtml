@@ -14,8 +14,9 @@
     <meta name="" content="" />
 
 
-    @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/datatable")
 
 </head>
 <body>
@@ -38,7 +39,9 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/datatable")
     @RenderSection("scripts", required: false)
+
 
 </body>
 </html>
