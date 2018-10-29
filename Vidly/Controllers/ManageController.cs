@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace Vidly.Controllers
 {
+    [Authorize]
     public class ManageController : Controller
     {
         // GET: Manage

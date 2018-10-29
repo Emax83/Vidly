@@ -19,7 +19,7 @@
         @Html.Partial("_LoginPartial")
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a href="#" class="nav-link">about</a>
+                @Html.ActionLink("About", "About", "Home", null, new { @class = "nav-link" })
             </li>
         </ul>
     </div>

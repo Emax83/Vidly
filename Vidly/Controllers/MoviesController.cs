@@ -12,6 +12,7 @@ using System.Data.Entity.Validation;
 
 namespace Vidly.Controllers
 {
+    [Authorize]
     public class MoviesController : Controller
     {
 
@@ -29,6 +30,7 @@ namespace Vidly.Controllers
         //}
 
         // GET: /Movies
+        [AllowAnonymous]
         public ActionResult Index(int? pageIndex, string sortBy)
         {
             if (!pageIndex.HasValue)
@@ -46,7 +48,7 @@ namespace Vidly.Controllers
             return View(movies);
         }
 
-
+        [AllowAnonymous]
         public ActionResult Details(int id)
         {
             var movie = _movieService.GetMovie(id);
@@ -57,6 +59,7 @@ namespace Vidly.Controllers
         }
 
         //GET: /movies/random
+        [AllowAnonymous]
         public ActionResult Random()
         {
             var movie = new Movie() {
