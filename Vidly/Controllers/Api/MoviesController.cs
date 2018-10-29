@@ -60,6 +60,7 @@ namespace Vidly.Controllers.Api
         }
 
         //DELETE /API/customers/Delete/1
+        [HttpDelete]
         public void DeleteMovie(int id)
         {
             if (!_movieService.DeleteMovie(id))

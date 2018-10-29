@@ -34,7 +34,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.Customer.BirthDate, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.TextBoxFor(model => model.Customer.BirthDate, "{0:dd/MM/yyyy}", new { @class = "form-control" })
+            @Html.TextBoxFor(model => model.Customer.BirthDate, "{0:d}", new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.Customer.BirthDate, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -47,10 +47,12 @@
         </div>
     </div>
 
-    <div class="checkbox">
-        <label>
-            @Html.CheckBoxFor(model => model.Customer.IsSubscribedToNewsletter) Suscribe to newsletter?
-        </label>
+    <div class="form-group">
+        <div class="checkbox">
+            <label>
+                @Html.CheckBoxFor(model => model.Customer.IsSubscribedToNewsletter) Suscribe to newsletter?
+            </label>
+        </div>
     </div>
 
     <div class="form-group">
@@ -60,7 +62,7 @@
     </div>
 
 </div>
-}
+    }
 
     <div class="form-horizontal">
         <div class="form-group">

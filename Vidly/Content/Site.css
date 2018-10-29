@@ -2,6 +2,7 @@
     margin:0;
     padding:0;
     width:100%;
+    font-family:'Montserrat','Open Sans',Verdana, Geneva, Tahoma, sans-serif;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -36,4 +37,28 @@ table,th,td{
 
 .input-validation-error {
     border:2px solid red;
+}
+
+.navbar{
+    padding:5px;
+}
+
+.navbar-toggler {
+    padding:3px 5px;
+}
+
+.checkbox  label input[type="checkbox"]{
+    background-color:forestgreen;
+}
+
+.btn {
+    width: 100%;
+    max-width: 280px;
+}
+
+.sticky-bottom {
+    position: -webkit-sticky;
+    position: sticky;
+    bottom: 0;
+    z-index: 1020;
 }

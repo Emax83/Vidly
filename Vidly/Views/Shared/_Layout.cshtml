@@ -14,15 +14,18 @@
     <meta name="" content="" />
 
 
+    <link href="https://fonts.googleapis.com/css?family=Montserrat|Open+Sans" rel="stylesheet">
+
     @Scripts.Render("~/bundles/modernizr")
     @Styles.Render("~/Content/css")
-    @Styles.Render("~/Content/datatable")
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+
 
 </head>
 <body>
+
     @Html.Partial("_NavBar")
-
-
 
     <div class="container body-content">
         <p>
@@ -30,16 +33,19 @@
         </p>
 
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Vidly</p>
-        </footer>
+        
+
     </div>
+
+    @Html.Partial("_Footer")
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/datatable")
+
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
+
     @RenderSection("scripts", required: false)
 
 

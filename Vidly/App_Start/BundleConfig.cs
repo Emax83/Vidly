@@ -20,22 +20,18 @@ namespace Vidly
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
+                      "~/Scripts/bootbox.min.js",
                       "~/Scripts/bootstrap.js"));
-
-            bundles.Add(new ScriptBundle("~/bundles/datatable").Include(
-                      "~/Content/datatables/datatables.min.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      "~/Content/bootstrap-grid.css",
                       "~/Content/font-awesome.css",
                       //"~/Content/bootstrap-theme.css",
-                      "~/Content/bootstrap-lumen.css",
+                      //"~/Content/bootstrap-lumen.css",
                       //"~/Content/w3.css",
                       "~/Content/site.css"));
-
-            bundles.Add(new StyleBundle("~/Content/datatable").Include(
-                "~/Content/datatables/datatables.css"
-                ));
+            
         }
     }
 }
