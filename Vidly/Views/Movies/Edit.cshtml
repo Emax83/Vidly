@@ -6,7 +6,11 @@
 
 <h2>Edit Movie</h2>
 
-@using (Html.BeginForm("Save","Movies",FormMethod.Post))
+
+
+
+
+@using (Html.BeginForm("Save", "Movies", FormMethod.Post, new { enctype="multipart/form-data"}))
 {
     @Html.AntiForgeryToken()
 
@@ -15,6 +19,25 @@
     @Html.ValidationSummary(true, "Please fix errors", new { @class = "text-danger" })
 
     @Html.HiddenFor(model => model.Movie.Id)
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Movie.Cover, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10" onclick="document.getElementById('upload_cover').click();">
+            <div class="img-item">
+                <img id="imgCover" src="@Html.Raw(Model.Movie.Cover)" alt="" title="Cover" class="" />
+            </div>
+            <input type="file" id="upload_cover" name="files" hidden accept="image/jpeg, image/png" class="form-control" onchange="PreviewImage(this,'imgCover')" />
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Movie.Backdrop, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10" onclick="document.getElementById('upload_backdrop').click();">
+            <div class="img-item">
+                <img id="imgBackdrop" src="@Html.Raw(Model.Movie.Backdrop)" alt="" title="Backdrop" class="" />
+            </div>
+            <input type="file" id="upload_backdrop" name="files" hidden accept="image/jpeg, image/png" class="form-control" onchange="PreviewImage(this,'imgBackdrop')" />
+        </div>
+    </div>
 
     <div class="form-group">
         @Html.LabelFor(model => model.Movie.Name, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -27,7 +50,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.Movie.ReleaseDate, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.TextBoxFor(model => model.Movie.ReleaseDate, "{0:dd/MM/yyyy}", new { @class = "form-control" })
+            @Html.TextBoxFor(model => model.Movie.ReleaseDate, "{0:d}", new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.Movie.ReleaseDate, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -35,7 +58,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.Movie.Price, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.Movie.Price, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.TextBoxFor(model => model.Movie.Price, "{0:c2}", new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.Movie.Price, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -57,6 +80,13 @@
     </div>
 
     <div class="form-group">
+        @Html.LabelFor(model => model.Movie.DateAdded, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.Movie.DateAdded, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <input type="submit" value="Save" class="btn btn-primary" />
         </div>
@@ -64,24 +94,150 @@
 </div>
 }
 
-    <div class="form-horizontal">
+<div class="form-horizontal">
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary" })
+        </div>
+    </div>
+    @if (Model.Movie != null && Model.Movie.Id > 0)
+    {
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary" })
+                @using (Html.BeginForm("Delete", "Movies", new { id = Model.Movie.Id }, FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken();
+                    @Html.HiddenFor(model => model.Movie.Id)
+                    <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure?')" />
+                }
             </div>
         </div>
-        @if (Model.Movie != null && Model.Movie.Id > 0)
-        {
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    @using (Html.BeginForm("Delete", "Movies", new { id = Model.Movie.Id }, FormMethod.Post))
-                    {
-                        @Html.AntiForgeryToken();
-                        @Html.HiddenFor(model => model.Movie.Id)
-                        <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure?')" />
-                    }
-                </div>
-            </div>
-        }
+    }
+
+</div>
+
+<div>
+
+    <input type="file" id="file" name="file" multiple accept="image/png, image/jpeg" onchange="PreviewImg(this)" />
+
+    <input type="button" value="Upload ajax" id="UploadButton" name="UploadButton" />
+
+    <div class="horizontal-container" id="divCarousel">
 
     </div>
+
+</div>
+
+@section scripts{
+    <script>
+
+
+        function RemoveImage(e, sender) {
+            try {
+                var div = sender.parentNode.parentNode;
+                var imgName = div.getAttribute('data-img-name');
+                var input = document.getElementById('file');
+                var i;
+                debugger;
+                for (i = 0; i < input.files.length; i++) {
+                    if (input.files[i].name == imgName) {
+                        input.files.splice(i, 1);
+                    }
+                }
+                div.remove();
+            }
+            catch (err) {
+                alert(err.message);
+            }
+        }
+        
+        function PreviewImage(input,destId) {
+            var i;
+            for (i = 0; i < input.files.length; i++) {
+                var file = input.files[i];
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var img = document.getElementById(destId);
+                    img.src = e.target.result;
+                    img.alt = file.name;
+                    //var item = "<div class='img-item' data-img-name='" + file.name + "' ><img class='' title='" + file.name + "' alt='" + file.name + "' src='" + e.target.result + "' /><div class='close'><span onclick='RemoveImage(event,this)' >&times;</span></div></div>";
+                    //$('#divCarousel').append(item);
+                };
+
+                if (file) {
+                    reader.readAsDataURL(file);
+                }
+            }
+
+        }
+
+        function PreviewImg(input) {
+            var i;
+            for (i = 0; i < input.files.length; i++) {
+                var file = input.files[i];
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var item = "<div class='img-item' data-img-name='" + file.name + "' ><img class='' title='" + file.name + "' alt='" + file.name + "' src='" + e.target.result + "' /><div class='close'><span onclick='RemoveImage(event,this)' >&times;</span></div></div>";
+                    $('#divCarousel').append(item);
+                };
+
+                if (file) {
+                    reader.readAsDataURL(file);
+                }
+            }
+
+        }
+
+        $(document).ready(function () {
+
+            $('#UploadButton').on('click', function () {
+                try {
+
+                    var button = $('#UploadButton');
+
+                    var input = document.getElementById('file');
+                    var files = input.files;
+                    if (files.length <= 0) {
+                        return;
+                    }
+
+                    var data = new FormData();
+                    for (var x = 0; x < files.length; x++) {
+                        data.append("file" + x, files[x]);
+                    }
+
+                    $.ajax({
+                        type: "POST",
+                        url: '@Html.Raw(Url.Action("UploadFile", "Movies"))',
+                        contentType: false,
+                        processData: false,
+                        data: data,
+                        dataType: 'multipart/form-data',
+                        beforeSend: function () {
+                            button.value = 'uploading..';
+                            button.attr('disabled', 'disabled');
+                        },
+                        error: function (xhr, status, p3, p4) {
+                            var err = "Error " + " " + status + " " + p3 + " " + p4;
+                            if (xhr.responseText && xhr.responseText[0] === "{")
+                                err = JSON.parse(xhr.responseText).Message;
+                            console.log(err);
+                        },
+                        success: function (result, status) {
+                            alert(result);
+                        }
+                    });
+
+                    button.value = 'Upload Ajax';
+                    button.removeAttr('disabled');
+
+                }
+                catch (err) {
+                    alert('Error: ' + err.message);
+                }
+            });
+        });
+    </script>
+
+}
+

@@ -1,9 +1,6 @@
 ﻿using Newtonsoft.Json.Serialization;
 using System.Web.Http;
-using System.Web.Http.Dependencies;
 using Unity;
-using Unity.Injection;
-using Unity.Mvc5;
 using Vidly.Infrastracture;
 using Vidly.Repository;
 
@@ -26,6 +23,7 @@ namespace Vidly
             var container = new UnityContainer();
             container.RegisterType<ICustomerService, EFCustomerService>();
             container.RegisterType<IMovieService, EFMovieService>();
+            container.RegisterType<IUserService, EFUserService>();
 
             config.DependencyResolver = new UnityResolver(container);
 

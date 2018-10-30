@@ -1,14 +1,21 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta name="viewport" content="width=device-width" />
-    <title>Errore</title>
-</head>
-<body>
-    <hgroup>
-        <h1>Errore.</h1>
-        <h2>Si è verificato un errore durante l'elaborazione della richiesta.</h2>
-    </hgroup>
-</body>
-</html>
+﻿@model HandleErrorInfo
+@{
+    ViewBag.Title = "Error";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+    <h1>Oops..</h1>
+    <h2>Si è verificato un errore durante l'elaborazione della richiesta.</h2>
+        
+        <h3><label>Controller:</label>@Model.ControllerName</h3>
+        <h3><label>Action:</label>@Model.ActionName</h3>
+        <h3><label>Source:</label>@Model.Exception.Source</h3>
+        <h4><label>Message:</label>@Model.Exception.Message</h4>
+
+@if (Request.Url.Host.Contains("localhost")) { 
+        <div class="" style="width:100%; overflow:auto;">
+            <label>Stacktrace:</label><br />
+            <textarea style="max-width:100%; height:800px; resize:none; " readonly="readonly">@Model.Exception.StackTrace</textarea>
+        </div>
+}

@@ -18,6 +18,7 @@ namespace Vidly.Models
         public bool IsSubscribedToNewsletter { get; set; }
 
         [Display(Name = "Date of Birth")]
+        [DisplayFormat(DataFormatString = "{0:d}")]
         [DataType(DataType.Date)]
         public DateTime? BirthDate { get; set; }
 
@@ -27,6 +28,8 @@ namespace Vidly.Models
         public byte MembershipTypeId { get; set; }
 
         public MembershipType MembershipType { get; set; }
+
+        public string Thumbnail { get; set; }
 
     }
 }

@@ -10,8 +10,9 @@ using Vidly.ViewModels;
 
 namespace Vidly.Controllers
 {
-    [Authorize]
-    public class CustomersController : Controller
+    //[Authorize(Roles = "admin")]
+    [AllowAnonymous]
+    public class CustomersController : BaseController
     {
 
         private readonly ICustomerService _context;
@@ -37,6 +38,7 @@ namespace Vidly.Controllers
             return View(customer);
         }
 
+        [HttpGet]
         public ActionResult Edit(int id)
         {
             Customer customer = _context.GetCustomer(id);
@@ -77,37 +79,24 @@ namespace Vidly.Controllers
                 try
                 {
 
+                    if (viewModel.Customer.Id == 0)
+                    {
+                            _context.AddCustomer(viewModel.Customer);
+                    }
+                    else
+                    {
+                            _context.UpdateCustomer(viewModel.Customer);
+                    }
 
-                if (viewModel.Customer.Id == 0)
-                {
-                        _context.AddCustomer(viewModel.Customer);
-                }
-                else
-                {
-                        //var custdb = _context.Customers.Single(c => c.Id == viewModel.Customer.Id);
-
-                        //Vidly.Helpers.Mapper.Map(viewModel.Customer, custdb);
-
-                        //TryUpdateModel(custdb, "", new string[] { "Name", "MembershipTypeId", "IsSubscribedToNewsletter", "BirthDate" } );
-
-                        _context.UpdateCustomer(viewModel.Customer);
-
-                    //custdb.Name = viewModel.Customer.Name;
-                    //custdb.MembershipTypeId = viewModel.Customer.MembershipTypeId;
-                    //custdb.IsSubscribedToNewsletter = viewModel.Customer.IsSubscribedToNewsletter;
-                    //custdb.BirthDate = viewModel.Customer.BirthDate;
-
-                }
-
-                //_context.SaveChanges();
-
-                TempData["Message"] = "Customer saved Successfull";
-                return RedirectToAction("Index", "Customers");
+                    AddMessage("Customer saved Successfull");
+                   
+                    return RedirectToAction("Edit", new { id = viewModel.Customer.Id});
 
                 }
                 catch (Exception ex)
                 {
-                    TempData["Error"] = "Error saving: " + ex.Message;
+                    AddError("Error saving: " + ex.Message);
+                    
                 }
 
             }
@@ -119,15 +108,41 @@ namespace Vidly.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeletePost(int id)
         {
-            //Customer customer = _context.DeleteCustomer
-            //if (customer == null)
-            //    return HttpNotFound();
+            try
+            {
+                _context.DeleteCustomer(id);
 
-            //_context.Customers.Remove(customer);
-            //_context.SaveChanges();
-            _context.DeleteCustomer(id);
+                AddMessage("Customer deleted successfully");
+
+            }
+            catch(Exception ex)
+            {
+                AddError("Error during delete: " + ex.Message);
+            }
 
             return RedirectToAction("Index", "Customers");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public bool ActionResultUploadFile(HttpPostedFileBase file)
+        {
+            try
+            {
+                if (file.ContentLength > 0)
+                {
+                    string _FileName = System.IO.Path.GetFileName(file.FileName);
+                    string _path = System.IO.Path.Combine(Server.MapPath("~/TempFiles"), HttpContext.CurrentUser().UserId.ToString(), _FileName);
+                    file.SaveAs(_path);
+                }
+                AddMessage("File Uploaded Successfully!");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                AddError("File upload failed: " + ex.Message);
+                return false;
+            }
         }
 
     }

@@ -18,14 +18,17 @@ namespace Vidly.Models
 
         [Display(Name = "Date of Release")]
         [DisplayFormat(DataFormatString = "{0:d}")]
+        [DataType(DataType.Date)]
         public DateTime? ReleaseDate { get; set; }
 
         [Display(Name = "Date added")]
         [DisplayFormat(DataFormatString = "{0:d}")]
+        [DataType(DataType.Date)]
         public DateTime? DateAdded { get; set; }
 
         [Required]
         [Range(0,1000,ErrorMessage ="Min. 0€")]
+        [DisplayFormat(DataFormatString = "{0:c2}")]
         public decimal Price { get; set; }
 
         [Required]
@@ -38,6 +41,9 @@ namespace Vidly.Models
         public int GenreId { get; set; }
 
         public Genre Genre { get; set; }
+
+        public string Cover { get; set; }
+        public string Backdrop { get; set; }
 
     }
 }

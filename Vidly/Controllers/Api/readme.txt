@@ -16,3 +16,8 @@ The Global.asax.cs file in the project may require additional changes to enable 
 3. Add the following lines to the beginning of the Application_Start method:
 
     GlobalConfiguration.Configure(WebApiConfig.Register);
+
+
+4. FOR DEPENDENCY INJECTION:
+	Create class unityresolver.cs
+	in WebApiConfig.cs utilize UnityResolver.cs to resolve dependencies

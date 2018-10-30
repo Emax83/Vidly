@@ -9,7 +9,7 @@ using Vidly.Models;
 namespace Vidly.Infrastracture
 {
     //gateway to database
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : DbContext //IdentityDbContext<ApplicationUser>
     {
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Movie> Movies { get; set; }
@@ -17,7 +17,7 @@ namespace Vidly.Infrastracture
         public DbSet<Genre> Genres { get; set; }
 
         public ApplicationDbContext()
-            : base("DbConnection", throwIfV1Schema: false)
+            : base("DbConnection")//, throwIfV1Schema: false)
         {
 
         }

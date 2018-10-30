@@ -9,6 +9,18 @@
 <div>
     <h4>@Html.DisplayFor(model => model.Name)</h4>
     <hr />
+
+    <div class="card" style="width: 18rem;">
+        <img class="card-img-top" src="@Model.Thumbnail" alt="Card image cap">
+        <div class="card-body">
+            <p class="card-text">@Html.DisplayNameFor(model=>model.Thumbnail)</p>
+            <p>
+                @Html.ActionLink("&times;", "ClearThumbnail", "Customers")
+                <input type="file" id="Thumbnail" name="Thumbnail" />
+            </p>
+        </div>
+    </div>
+
     <dl class="dl-horizontal">
 
         <dt>

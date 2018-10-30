@@ -9,7 +9,7 @@
 
 <h2>
     Customers
-
+    
 
 </h2>
 
@@ -25,15 +25,11 @@ else
     <table class="display dataTable small" id="table-customers">
         <thead>
             <tr>
-                <th>
-                    Customer
-
-                </th>
+                <th>&nbsp;</th>
+                <th>Customer</th>
                 <th>Membership Type</th>
                 <th>Discount Rate</th>
-                <th>
-                    @Html.ActionLink("Create New", "Create", "Customers")
-                </th>
+                <th class="text-center">@Html.ActionLink("Create New", "Create", "Customers")</th>
             </tr>
         </thead>
         <tbody>
@@ -41,15 +37,20 @@ else
             {
                 <tr>
                     <td>
+                        <a href="@Url.Action("Details","Customers", new { id = customer.Id })">
+                            <img src="@customer.Thumbnail" alt="@customer.Name" />
+                        </a>
+                    </td>
+                    <td>
                         @Html.ActionLink(customer.Name, "Details", "Customers", new { id = customer.Id }, null)
                     </td>
                     <td>
-                        @customer.MembershipType.Name %
+                        @customer.MembershipType.Name
                     </td>
-                    <td>
+                    <td  class="text-center">
                         @customer.MembershipType.DiscountRate %
                     </td>
-                    <td>
+                    <td class="text-center">
                         @Html.ActionLink("Edit", "Edit", "Customers", new { id = customer.Id }, new { @class = "" })
                         <a href="javascript:void(0)" class="js-delete" data-customer-id="@customer.Id">Delete</a>
                     </td>

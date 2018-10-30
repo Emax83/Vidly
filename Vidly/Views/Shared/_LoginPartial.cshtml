@@ -1,9 +1,21 @@
 ﻿<ul class="navbar-nav">
+    @if (Html.CurrentUser() != null && Html.CurrentUser().IsLogged())
+    {
+        <li class="nav-item">
+            @Html.ActionLink( Html.CurrentUser().Name, "Details", "Account", null, new { @class = "nav-link" })
+        </li>
+        <li class="nav-item">
+            @Html.ActionLink("Logout", "Logout", "Account", null, new { @class = "nav-link" })
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            @Html.ActionLink("Register", "Register", "Account", null, new { @class = "nav-link" })
+        </li>
+        <li class="nav-item">
+            @Html.ActionLink("Log in", "Login", "Account", null, new { @class = "nav-link" })
+        </li>
+    }
 
-    <li class="nav-item">
-        @Html.ActionLink("Register", "Index", "Home",null,new { @class="nav-link"})
-    </li>
-    <li class="nav-item">
-        @Html.ActionLink("Log in", "About", "Home", null, new { @class = "nav-link" })
-    </li>
 </ul>
