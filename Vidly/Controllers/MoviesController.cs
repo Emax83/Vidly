@@ -3,10 +3,8 @@ using System.Web.Mvc;
 using Vidly.Infrastracture;
 using Vidly.Models;
 using Vidly.ViewModels;
-using Vidly.Helpers;
-using System.Web;
 using System.Collections.Generic;
-using System.Net;
+using System.Linq;
 
 namespace Vidly.Controllers
 {
@@ -109,23 +107,25 @@ namespace Vidly.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Save(MovieViewModel viewModel, IEnumerable<HttpPostedFileBase> files)
+        public ActionResult Save(MovieViewModel viewModel)//, IEnumerable<HttpPostedFileBase> files)
         {
             viewModel.Genres = _movieService.GetGenres();
+            viewModel.Movie.Genre = viewModel.Genres.Where(x => x.Id == viewModel.Movie.GenreId).FirstOrDefault();
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    foreach (var file in files)
-                    {
-                        if (file.ContentLength > 0)
-                        {
-                            var fileName = System.IO.Path.GetFileName(file.FileName);
-                            var path = System.IO.Path.Combine(Server.MapPath("~/App_Data/uploads"), fileName);
-                            file.SaveAs(path);
-                        }
-                    }
+                    //foreach (var file in files)
+                    //{
+                    //    if (file.ContentLength > 0)
+                    //    {
+                    //        var path = System.IO.Path.Combine(Server.MapPath("~/TempFiles/uploads"), fileName);
+                    //        file.SaveAs(path);
+                    //    }
+                    //}
+
+                
 
                     if (viewModel.Movie.Id == 0)
                     {
@@ -137,11 +137,23 @@ namespace Vidly.Controllers
                         _movieService.UpdateMovie(viewModel.Movie);
                     }
 
-                    
+                    if (viewModel.Cover!=null && viewModel.Cover.ContentLength > 0)
+                    {
+                        var path = System.IO.Path.Combine(Server.MapPath("~/TempFiles/uploads"),viewModel.Movie.Id.ToString(), "Cover" + System.IO.Path.GetExtension(viewModel.Cover.FileName));
+                        viewModel.Cover.SaveAs(path);
+
+                        viewModel.Movie.Cover = string.Format("",); "~/content/images/movies/11/cover.jpg";
+                    }
+                    if (viewModel.Backdrop != null && viewModel.Backdrop.ContentLength > 0)
+                    {
+                        var path = System.IO.Path.Combine(Server.MapPath("~/TempFiles/uploads"), viewModel.Movie.Id.ToString(),"Backdrop" + System.IO.Path.GetExtension(viewModel.Cover.FileName));
+                        viewModel.Backdrop.SaveAs(path);
+                        viewModel.Movie.Backdrop = "";
+                    }
 
                     AddMessage("Movie saved Successfull");
 
-                    return RedirectToAction("Edit", new { id = viewModel.Movie.Id});
+                    //return RedirectToAction("Edit", new { id = viewModel.Movie.Id});
 
                 }
                 catch (Exception ex)
@@ -151,7 +163,7 @@ namespace Vidly.Controllers
                 }
 
             }
-            return View("Edit", viewModel);
+            return RedirectToAction("Edit", new { id = viewModel.Movie.Id });
         }
 
 

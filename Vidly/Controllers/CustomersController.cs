@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Data.Entity;
 using System.Web;
 using System.Web.Mvc;
 using Vidly.Infrastracture;
@@ -73,6 +72,7 @@ namespace Vidly.Controllers
         public ActionResult Save(CustomerViewModel viewModel)
         {
             viewModel.MembershipTypes = _context.GetMembershipTypes();
+            viewModel.Customer.MembershipType = viewModel.MembershipTypes.Where(x => x.Id == viewModel.Customer.MembershipTypeId).FirstOrDefault();
 
             if (ModelState.IsValid)
             {
@@ -88,9 +88,16 @@ namespace Vidly.Controllers
                             _context.UpdateCustomer(viewModel.Customer);
                     }
 
+                    if (viewModel.Thumbnail != null && viewModel.Thumbnail.ContentLength > 0)
+                    {
+                        var path = System.IO.Path.Combine(Server.MapPath("~/TempFiles/uploads"), viewModel.Thumbnail.FileName);
+                        viewModel.Thumbnail.SaveAs(path);
+                        viewModel.Customer.Thumbnail = "";
+                    }
+
                     AddMessage("Customer saved Successfull");
                    
-                    return RedirectToAction("Edit", new { id = viewModel.Customer.Id});
+                    //return RedirectToAction("Edit", new { id = viewModel.Customer.Id});
 
                 }
                 catch (Exception ex)
@@ -100,7 +107,8 @@ namespace Vidly.Controllers
                 }
 
             }
-            return View("Edit", viewModel);
+            //return View("Edit", viewModel);
+            return RedirectToAction("Edit", new { id = viewModel.Customer.Id });
         }
 
         [HttpPost]
