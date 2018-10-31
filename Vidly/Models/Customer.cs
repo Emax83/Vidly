@@ -29,7 +29,13 @@ namespace Vidly.Models
 
         public MembershipType MembershipType { get; set; }
 
-        public string Thumbnail { get; set; }
+        public string Thumbnail
+        {
+            get
+            {
+                return string.Format("{0}/{1}", Id, "Thumb.jpg");
+            }
+        }
 
     }
 }

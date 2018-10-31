@@ -17,18 +17,16 @@ namespace Vidly.Models
         public string Name { get; set; }
 
         [Display(Name = "Date of Release")]
-        [DisplayFormat(DataFormatString = "{0:d}")]
-        [DataType(DataType.Date)]
+        //[DisplayFormat(DataFormatString = "{0:d}",ApplyFormatInEditMode = true)]
         public DateTime? ReleaseDate { get; set; }
 
         [Display(Name = "Date added")]
-        [DisplayFormat(DataFormatString = "{0:d}")]
-        [DataType(DataType.Date)]
+        //[DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime? DateAdded { get; set; }
 
         [Required]
         [Range(0,1000,ErrorMessage ="Min. 0€")]
-        [DisplayFormat(DataFormatString = "{0:c2}")]
+        //[DisplayFormat(DataFormatString = "{0:c2}", ApplyFormatInEditMode = true)]
         public decimal Price { get; set; }
 
         [Required]
@@ -42,8 +40,16 @@ namespace Vidly.Models
 
         public Genre Genre { get; set; }
 
-        public string Cover { get; set; }
-        public string Backdrop { get; set; }
+        public string Cover {
+            get {
+                return string.Format("{0}/{1}",Id,"Cover.jpg");
+            }
+        }
+        public string Backdrop {
+            get {
+                return string.Format("{0}/{1}", Id, "Backdrop.jpg");
+            }
+        }
 
     }
 }

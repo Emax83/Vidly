@@ -18,9 +18,10 @@
 
     @Scripts.Render("~/bundles/modernizr")
     @Styles.Render("~/Content/css")
-    
+
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
 
+    @RenderSection("head", required: false)
 
 </head>
 <body>
@@ -33,20 +34,99 @@
         </p>
 
         @RenderBody()
-        
+
 
     </div>
 
     @Html.Partial("_Footer")
 
     @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/bootstrap")
-
+    @Scripts.Render("~/bundles/globalize")
+    @Scripts.Render("~/bundles/jqueryval")
+       
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script>
 
+  @{
+    var culture = "it";
+  }
+
+        $(function () {
+            $.when(
+                $.get('@Url.Content("~/Scripts/cldr/supplemental/likelySubtags.json")')
+                    .success(function (data) { Globalize.load(data); }),
+                $.get('@Url.Content("~/Scripts/cldr/main/{culture}/numbers.json")')
+                    .success(function (data) { Globalize.load(data); }),
+                $.get('@Url.Content("~/Scripts/cldr/supplemental/numberingSystems.json")')
+                    .success(function (data) { Globalize.load(data); }),
+                $.get('@Url.Content("~/Scripts/cldr/main/{culture}/ca-gregorian.json")')
+                    .success(function (data) { Globalize.load(data); }),
+                $.get('@Url.Content("~/Scripts/cldr/main/{culture}/timeZoneNames.json")')
+                    .success(function (data) { Globalize.load(data); }),
+                $.get('@Url.Content("~/Scripts/cldr/supplemental/timeData.json")')
+                    .success(function (data) { Globalize.load(data); }),
+                $.get('@Url.Content("~/Scripts/cldr/supplemental/weekData.json")')
+                    .success(function (data) { Globalize.load(data); })
+            ).then(function () {
+                Globalize.locale('@culture');
+            });
+        });
+
+
+
+      (function ($, Globalize) {
+          if (!$.validator) {
+              return;
+          }
+
+          // Clone original methods we want to call into
+          var originalMethods = {
+              min: $.validator.methods.min,
+              max: $.validator.methods.max,
+              range: $.validator.methods.range
+          };
+
+          // Globalize options - initially just the date format used for parsing
+          // Users can customise this to suit them
+          $.validator.methods.dateGlobalizeOptions = {
+              dateParseFormat: { skeleton: "yMd" }
+          };
+
+          // Tell the validator that we want numbers parsed using Globalize
+          $.validator.methods.number = function (value, element) {
+              var val = Globalize.parseNumber(value);
+              return this.optional(element) || ($.isNumeric(val));
+          };
+
+          // Tell the validator that we want dates parsed using Globalize
+          $.validator.methods.date = function (value, element) {
+              var val = Globalize.parseDate(value,
+                  $.validator.methods.dateGlobalizeOptions.dateParseFormat);
+              return this.optional(element) || (val instanceof Date);
+          };
+
+          // Tell the validator that we want numbers parsed using Globalize,
+          // then call into original implementation with parsed value
+
+          $.validator.methods.min = function (value, element, param) {
+              var val = Globalize.parseNumber(value);
+              return originalMethods.min.call(this, val, element, param);
+          };
+
+          $.validator.methods.max = function (value, element, param) {
+              var val = Globalize.parseNumber(value);
+              return originalMethods.max.call(this, val, element, param);
+          };
+
+          $.validator.methods.range = function (value, element, param) {
+              var val = Globalize.parseNumber(value);
+              return originalMethods.range.call(this, val, element, param);
+          };
+      }(jQuery, Globalize));
+
+    </script>
     @RenderSection("scripts", required: false)
-
 
 </body>
 </html>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 
@@ -23,6 +24,15 @@ namespace Vidly
         {
             TempData["Warning"] = message;
         }
+
+        //protected override IAsyncResult BeginExecuteCore(AsyncCallback callback, object state)
+        //{
+        //    string[] cultures = { "es-CL", "es-GT", "en-US" };
+        //    Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("it-IT");
+        //    Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
+
+        //    return base.BeginExecuteCore(callback, state);
+        //}
 
     }
 }

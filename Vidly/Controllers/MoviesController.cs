@@ -11,9 +11,7 @@ namespace Vidly.Controllers
     [AllowAnonymous]
     public class MoviesController : BaseController
     {
-
         private readonly IMovieService _movieService;
-
         public MoviesController(IMovieService service)
         {
             _movieService = service;// = new ApplicationDbContext();
@@ -107,7 +105,7 @@ namespace Vidly.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Save(MovieViewModel viewModel)//, IEnumerable<HttpPostedFileBase> files)
+        public ActionResult Edit(MovieViewModel viewModel)//, IEnumerable<HttpPostedFileBase> files)
         {
             viewModel.Genres = _movieService.GetGenres();
             viewModel.Movie.Genre = viewModel.Genres.Where(x => x.Id == viewModel.Movie.GenreId).FirstOrDefault();
@@ -116,16 +114,6 @@ namespace Vidly.Controllers
             {
                 try
                 {
-                    //foreach (var file in files)
-                    //{
-                    //    if (file.ContentLength > 0)
-                    //    {
-                    //        var path = System.IO.Path.Combine(Server.MapPath("~/TempFiles/uploads"), fileName);
-                    //        file.SaveAs(path);
-                    //    }
-                    //}
-
-                
 
                     if (viewModel.Movie.Id == 0)
                     {
@@ -134,26 +122,32 @@ namespace Vidly.Controllers
                     }
                     else
                     {
+                        if (!viewModel.Movie.DateAdded.HasValue)
+                            viewModel.Movie.DateAdded = DateTime.UtcNow;
+
                         _movieService.UpdateMovie(viewModel.Movie);
                     }
 
                     if (viewModel.Cover!=null && viewModel.Cover.ContentLength > 0)
                     {
-                        var path = System.IO.Path.Combine(Server.MapPath("~/TempFiles/uploads"),viewModel.Movie.Id.ToString(), "Cover" + System.IO.Path.GetExtension(viewModel.Cover.FileName));
-                        viewModel.Cover.SaveAs(path);
+                        var path = System.IO.Path.Combine(Server.MapPath("~/Images/Movies/"),viewModel.Movie.Cover);
+                        if (System.IO.Directory.Exists(System.IO.Path.GetDirectoryName(path)) == false)
+                            System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(path));
 
-                        viewModel.Movie.Cover = string.Format("",); "~/content/images/movies/11/cover.jpg";
+                        viewModel.Cover.SaveAs(path);
                     }
                     if (viewModel.Backdrop != null && viewModel.Backdrop.ContentLength > 0)
                     {
-                        var path = System.IO.Path.Combine(Server.MapPath("~/TempFiles/uploads"), viewModel.Movie.Id.ToString(),"Backdrop" + System.IO.Path.GetExtension(viewModel.Cover.FileName));
+                        var path = System.IO.Path.Combine(Server.MapPath("~/Images/Movies/"), viewModel.Movie.Backdrop);
+                        if (System.IO.Directory.Exists(System.IO.Path.GetDirectoryName(path)) == false)
+                            System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(path));
+
                         viewModel.Backdrop.SaveAs(path);
-                        viewModel.Movie.Backdrop = "";
                     }
 
                     AddMessage("Movie saved Successfull");
 
-                    //return RedirectToAction("Edit", new { id = viewModel.Movie.Id});
+                    return RedirectToAction("Edit", new { id = viewModel.Movie.Id });
 
                 }
                 catch (Exception ex)
@@ -163,7 +157,7 @@ namespace Vidly.Controllers
                 }
 
             }
-            return RedirectToAction("Edit", new { id = viewModel.Movie.Id });
+            return View("Edit", viewModel);
         }
 
 

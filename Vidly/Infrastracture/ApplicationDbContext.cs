@@ -19,7 +19,8 @@ namespace Vidly.Infrastracture
         public ApplicationDbContext()
             : base("DbConnection")//, throwIfV1Schema: false)
         {
-
+            //Disable initializer
+            Database.SetInitializer<ApplicationDbContext>(null);
         }
 
         public static ApplicationDbContext Create()

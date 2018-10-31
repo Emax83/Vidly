@@ -12,7 +12,7 @@ namespace Vidly.Helpers
             foreach (System.Reflection.PropertyInfo property in source.GetType().GetProperties())
             {
                 System.Reflection.PropertyInfo info = destination.GetType().GetProperty(property.Name);
-                if (info != null)
+                if (info != null & info.CanWrite)
                     info.SetValue(destination, property.GetValue(source));
             }
         }

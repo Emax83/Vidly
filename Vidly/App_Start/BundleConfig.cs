@@ -12,7 +12,20 @@ namespace Vidly
                         "~/Scripts/jquery-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                        "~/Scripts/jquery.validate*"));
+                        //"~/Scripts/jquery.validate*"));
+                        "~/Scripts/jquery.validate.js",
+                        "~/Scripts/jquery.validate.unobtrusive.js"
+                        ));
+
+            //http://www.aspitalia.com/script/1218/Impostare-Culture-Client-Side-Validation-ASP.NET-MVC.aspx
+            bundles.Add(new ScriptBundle("~/bundles/globalize").Include(
+                        "~/Scripts/cldr.js",
+                        "~/Scripts/cldr/event.js",
+                        "~/Scripts/cldr/supplemental.js",
+                        "~/Scripts/globalize.js",
+                        "~/Scripts/globalize/number.js",
+                        "~/Scripts/globalize/date.js"
+                        ));
 
             // Utilizzare la versione di sviluppo di Modernizr per eseguire attività di sviluppo e formazione. Successivamente, quando si è
             // pronti per passare alla produzione, usare lo strumento di compilazione disponibile all'indirizzo https://modernizr.com per selezionare solo i test necessari.

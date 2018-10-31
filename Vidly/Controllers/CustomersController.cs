@@ -69,7 +69,7 @@ namespace Vidly.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Save(CustomerViewModel viewModel)
+        public ActionResult Edit(CustomerViewModel viewModel)
         {
             viewModel.MembershipTypes = _context.GetMembershipTypes();
             viewModel.Customer.MembershipType = viewModel.MembershipTypes.Where(x => x.Id == viewModel.Customer.MembershipTypeId).FirstOrDefault();
@@ -90,9 +90,11 @@ namespace Vidly.Controllers
 
                     if (viewModel.Thumbnail != null && viewModel.Thumbnail.ContentLength > 0)
                     {
-                        var path = System.IO.Path.Combine(Server.MapPath("~/TempFiles/uploads"), viewModel.Thumbnail.FileName);
+                        var path = System.IO.Path.Combine(Server.MapPath("~/Images/Customers/"), viewModel.Customer.Thumbnail);
+                        if (System.IO.Directory.Exists(System.IO.Path.GetDirectoryName(path)) == false)
+                            System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(path));
+
                         viewModel.Thumbnail.SaveAs(path);
-                        viewModel.Customer.Thumbnail = "";
                     }
 
                     AddMessage("Customer saved Successfull");

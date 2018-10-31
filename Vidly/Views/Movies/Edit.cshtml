@@ -10,7 +10,7 @@
 
 
 
-@using (Html.BeginForm("Save", "Movies", FormMethod.Post, new { enctype="multipart/form-data"}))
+@using (Html.BeginForm("Edit", "Movies", FormMethod.Post, new { enctype="multipart/form-data"}))
 {
     @Html.AntiForgeryToken()
 
@@ -20,22 +20,22 @@
 
     @Html.HiddenFor(model => model.Movie.Id)
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Movie.Cover, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10" onclick="document.getElementById('upload_cover').click();">
-            <div class="img-item" style="background-image:url('');">
-                <img id="imgCover" src="@(Model.Movie.Cover)" alt="" title="Cover" class="" />
+    <div class="form-group row">
+        <label class="col-md-2">Images</label>
+
+        <div class="col-sm-5">
+            @Html.LabelFor(model => model.Movie.Cover, htmlAttributes: new { @class = "control-label" })<br />
+            <div class="img-item" style="background-image:url('');width:80px;" onclick="document.getElementById('upload_cover').click();">
+                <img id="imgCover" src="@Url.Content("~/Images/Movies/" + Model.Movie.Cover)" alt="" title="Cover" class="img-thumbnail" />
             </div>
-            @Html.TextBoxFor(m => m.Cover, new { type = "file", name = "Cover", id = "upload_cover" , hidden="hidden", accept="image/jpeg, image/png", @class="form-control", onchange="PreviewImage(this,'imgCover')" })
+            @Html.TextBoxFor(m => m.Cover, new { type = "file", name = "Cover", id = "upload_cover", hidden = "hidden", accept = "image/jpeg, image/png", @class = "form-control", onchange = "PreviewImage(this,'imgCover')" })
         </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.Movie.Backdrop, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10" onclick="document.getElementById('upload_backdrop').click();">
-            <div class="img-item">
-                <img id="imgBackdrop" src="@Html.Raw(Model.Movie.Backdrop)" alt="" title="Backdrop" class="" />
+        <div class="col-sm-5">
+            @Html.LabelFor(model => model.Movie.Backdrop, htmlAttributes: new { @class = "control-label" })<br />
+            <div class="img-item" onclick="document.getElementById('upload_backdrop').click();">
+                <img id="imgBackdrop" src="@Url.Content("~/Images/Movies/" + Model.Movie.Backdrop)" alt="" title="Backdrop" class="img-thumbnail" />
             </div>
-            <input type="file" id="upload_backdrop" name="files" hidden accept="image/jpeg, image/png" class="form-control" onchange="PreviewImage(this,'imgBackdrop')" />
+            @Html.TextBoxFor(m => m.Backdrop, new { type = "file", name = "Backdrop", id = "upload_backdrop", hidden = "hidden", accept = "image/jpeg, image/png", @class = "form-control", onchange = "PreviewImage(this,'imgBackdrop')" })
         </div>
     </div>
 
@@ -50,7 +50,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.Movie.ReleaseDate, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.TextBoxFor(model => model.Movie.ReleaseDate, "{0:d}", new { @class = "form-control" })
+            @Html.TextBoxFor(model => model.Movie.ReleaseDate, "{0:d}", new { @class = "form-control datepicker" })
             @Html.ValidationMessageFor(model => model.Movie.ReleaseDate, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -58,7 +58,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.Movie.Price, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.TextBoxFor(model => model.Movie.Price, "{0:c2}", new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.Movie.Price, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.Movie.Price, "", new { @class = "text-danger" })
         </div>
     </div>

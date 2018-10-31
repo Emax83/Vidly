@@ -38,7 +38,7 @@ else
                 <tr>
                     <td>
                         <a href="@Url.Action("Details","Customers", new { id = customer.Id })">
-                            <img src="@customer.Thumbnail" alt="@customer.Name" />
+                            <img src="@Url.Content("~/Images/Customers/" + customer.Thumbnail)" alt="@customer.Name" class="img-thumbnail" style="max-height:48px; max-width:32px;" />
                         </a>
                     </td>
                     <td>

@@ -36,7 +36,8 @@ table,th,td{
 }
 
 .input-validation-error {
-    border:2px solid red;
+    border: 2px solid red;
+    border-radius: 3px;
 }
 
 .navbar{
@@ -79,15 +80,14 @@ table,th,td{
     display: inline-block;
     background-color: #fff;
     margin: 5px;
-    padding: 2px;
     height: 80px;
     width: 100px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    /*border: 1px solid #ccc;
+    border-radius: 5px;*/
     overflow: hidden;
 }
     .img-item img {
-        margin: 0 auto;
+        margin: 2px;
         width: auto;
         height: 100%;
         text-align: center;

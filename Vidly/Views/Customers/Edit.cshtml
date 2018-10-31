@@ -7,19 +7,39 @@
 
 
 
-@using (Html.BeginForm("Save", "Customers", FormMethod.Post))
+@using (Html.BeginForm("Edit", "Customers", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
 
-
 <div class="form-horizontal">
-    <h2>Edit Customer</h2>
-    <hr />
 
     @Html.ValidationSummary(true, "Please fix errors", new { @class = "text-danger" })
 
     @Html.HiddenFor(model => model.Customer.Id)
+
+
+    <div id="dragDropPanel" style="border:2px dotted #ccc; height:100px; width:100px; background-color:#e6e6e6; text-align:center" draggable="true"
+         ondrop="drop(event)" ondragover="allowDrop(event)" ondragstart="drag(event)"
+         >
+        <p style="width:50%; margin:auto; ">
+            <i class="fa fa-camera" ></i>
+            Drag drop here
+        </p>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Customer.Thumbnail, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="img-item" style="background-image:url('');width:80px;" onclick="document.getElementById('upload_thumb').click();">
+                <img id="imgThumb" src="@Url.Content("~/Images/Customers/" + Model.Customer.Thumbnail)" alt="Thumbnail" title="Thumbnail" class="img-thumbnail" />
+            </div>
+            @Html.TextBoxFor(m => m.Thumbnail, new { type = "file", name="Thumbnail", id="upload_thumb", hidden = "hidden", accept = "image/jpeg, image/png", @class = "form-control", onchange = "PreviewImage(this,'imgThumb')" })
+
+            @Html.ValidationMessageFor(model => model.Customer.Thumbnail, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
 
     <div class="form-group">
         @Html.LabelFor(model => model.Customer.Name, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -28,8 +48,6 @@
             @Html.ValidationMessageFor(model => model.Customer.Name, "", new { @class = "text-danger" })
         </div>
     </div>
-
-
 
     <div class="form-group">
         @Html.LabelFor(model => model.Customer.BirthDate, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -85,3 +103,47 @@
         }
 
     </div>
+@section scripts{ 
+    <script>
+        function PreviewImage(input, destId) {
+            var i;
+            for (i = 0; i < input.files.length; i++) {
+                var file = input.files[i];
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var img = document.getElementById(destId);
+                    img.src = e.target.result;
+                    img.alt = file.name;
+                    //var item = "<div class='img-item' data-img-name='" + file.name + "' ><img class='' title='" + file.name + "' alt='" + file.name + "' src='" + e.target.result + "' /><div class='close'><span onclick='RemoveImage(event,this)' >&times;</span></div></div>";
+                    //$('#divCarousel').append(item);
+                };
+                if (file) {
+                    reader.readAsDataURL(file);
+                }
+            }
+        }
+
+
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            debugger;
+            var input = document.getElementById('upload_thumb');
+            input.files = ev.dataTransfer.files;//.getData("text");
+            var i;
+            for (i = 0; i < input.files.length; i++) {
+                var formData = new FormData();
+                formData.append(input.files[i].name, input.files[i]);
+            }
+            //ev.target.appendChild(document.getElementById(data));
+        }
+
+    </script>
+}
