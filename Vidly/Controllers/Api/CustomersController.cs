@@ -21,50 +21,55 @@ namespace Vidly.Controllers.Api
 
         //GET /API/customers/GetCustomers
         [HttpGet]
-        public IEnumerable<Customer> GetCustomers()
+        public IHttpActionResult GetCustomers()
         {
-            return _customerService.GetCustomers();
+            var customers = _customerService.GetCustomers();
+            return Ok(customers);
         }
 
         //GET /API/customers/GetCustomer
         [HttpGet]
-        public Customer GetCustomer(int id)
+        public IHttpActionResult GetCustomer(int id)
         {
             var customer = _customerService.GetCustomer(id);
             if (customer == null)
                 throw new HttpResponseException(HttpStatusCode.NotFound);
 
-            return customer;
+            return Ok(customer);
         }
 
         //POST /API/customers/CreateCustomer
         [HttpPost]
-        public Customer CreateCustomer(Customer customer)
+        public IHttpActionResult CreateCustomer(Customer customer)
         {
             if (!ModelState.IsValid)
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
 
             _customerService.AddCustomer(customer);
 
-            return customer;
+            return Created(new Uri(Request.RequestUri + "/" + customer.Id), customer);
         }
 
         //PUT /API/customers/Update
         [HttpPut]
-        public void UpdateCustomer(Customer customer)
+        public IHttpActionResult UpdateCustomer(Customer customer)
         {
             if (!ModelState.IsValid)
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
 
             if (!_customerService.UpdateCustomer(customer))
                 throw new HttpResponseException(HttpStatusCode.NotFound);
+
+            return Ok(customer);
         }
 
         //DELETE /API/customers/Delete/1
-        public void DeleteCustomer(int id)
+        public IHttpActionResult DeleteCustomer(int id)
         {
             if (!_customerService.DeleteCustomer(id))
                 throw new HttpResponseException(HttpStatusCode.NotFound);
+
+            return Ok();
         }
 
     }

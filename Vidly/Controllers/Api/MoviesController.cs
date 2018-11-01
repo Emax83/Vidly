@@ -50,13 +50,16 @@ namespace Vidly.Controllers.Api
 
         //PUT /API/customers/Update
         [HttpPut]
-        public void UpdateMovie(Movie movie)
+        public IHttpActionResult UpdateMovie(Movie movie)
         {
             if (!ModelState.IsValid)
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
 
             if (!_movieService.UpdateMovie(movie))
                 throw new HttpResponseException(HttpStatusCode.NotFound);
+
+            return Ok(movie);
+
         }
 
         //DELETE /API/customers/Delete/1

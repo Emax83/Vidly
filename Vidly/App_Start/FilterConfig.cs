@@ -11,7 +11,7 @@ namespace Vidly
             //qui si registrano i filtri da usare globalmente, in modo da non aggiungere ad ogni controller l'attrbuto
             filters.Add(new HandleErrorAttribute());
             filters.Add(new AuthorizeAttribute());
-            filters.Add(new RequireHttpsAttribute());
+            //filters.Add(new RequireHttpsAttribute());
             //filters.Add(new ApplicationFilter());
         }
     }

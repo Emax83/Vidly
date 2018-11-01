@@ -44,7 +44,17 @@ namespace Vidly
                       //"~/Content/bootstrap-lumen.css",
                       //"~/Content/w3.css",
                       "~/Content/site.css"));
-            
+
+            //using CDN
+            //bundles.UseCdn = true;   //ena
+            //var jqueryCdnPath = "https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.min.js";
+            //bundles.Add(new ScriptBundle("~/bundles/jquery",
+            //            jqueryCdnPath).Include(
+            //            "~/Scripts/jquery-{version}.js"));
+
+
+            BundleTable.EnableOptimizations = true;
+
         }
     }
 }
