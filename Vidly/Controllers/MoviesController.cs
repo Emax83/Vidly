@@ -190,8 +190,9 @@ namespace Vidly.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public JsonResult UploadFile()
+        public JsonResult UploadFile(int id, string code)
         {
+            dynamic result = "";
             try
             {
                 foreach (string file in Request.Files)
@@ -201,7 +202,7 @@ namespace Vidly.Controllers
                     {
                         // get a stream
                         var stream = fileContent.InputStream;
-                        var path = System.IO.Path.Combine(Server.MapPath("~/TempFiles"), fileContent.FileName);
+                        var path = System.IO.Path.Combine(Server.MapPath("~/TempFiles/Uploads"), fileContent.FileName);
                         using (var fileStream = System.IO.File.Create(path))
                         {
                             stream.CopyTo(fileStream);
@@ -209,16 +210,33 @@ namespace Vidly.Controllers
                     }
                 }
                 AddMessage("File Uploaded Successfully!");
-                return Json("File uploaded successfully");
+                return Json(new { success = true, responseText = "File Uploaded Successfully!" }, JsonRequestBehavior.AllowGet);
             }
             catch(Exception ex)
             {
                 AddError("File upload failed: " + ex.Message);
-                return Json("Upload failed");
+                return Json(new { success = false, responseText = ex.Message }, JsonRequestBehavior.AllowGet);
+                }
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult DeleteFile(int id, string code, string filename)
+        {
+            try
+            {
+                
+                AddMessage("File deleted Successfully!");
+                return Json(new { success = true, responseText = "File deleted Successfully!" }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                AddError("File delete failed: " + ex.Message);
+                return Json(new { success = false, responseText = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
-     
+
 
     }
 }

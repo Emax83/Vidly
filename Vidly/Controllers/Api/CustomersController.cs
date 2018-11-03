@@ -21,9 +21,13 @@ namespace Vidly.Controllers.Api
 
         //GET /API/customers/GetCustomers
         [HttpGet]
-        public IHttpActionResult GetCustomers()
+        public IHttpActionResult GetCustomers(string query=null)
         {
             var customers = _customerService.GetCustomers();
+
+            if (!string.IsNullOrWhiteSpace(query))
+                customers = customers.Where(c => c.Name.Contains(query));
+
             return Ok(customers);
         }
 

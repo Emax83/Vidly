@@ -8,8 +8,14 @@ namespace Vidly
         // Per altre informazioni sulla creazione di bundle, vedere https://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
-            bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+            bundles.Add(new ScriptBundle("~/bundles/lib").Include(
+                        "~/Scripts/jquery-{version}.js",
+                        "~/Scripts/bootstrap.js",
+                        "~/Scripts/bootbox.js",
+                        "~/Scripts/datatables/jquery.datatables.js",
+                        "~/Scripts/datatables/dataTables.bootstrap.js",
+                        "~/Scripts/typeahead.bundle.js"
+                        ));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         //"~/Scripts/jquery.validate*"));
@@ -27,21 +33,22 @@ namespace Vidly
                         "~/Scripts/globalize/date.js"
                         ));
 
+
             // Utilizzare la versione di sviluppo di Modernizr per eseguire attività di sviluppo e formazione. Successivamente, quando si è
             // pronti per passare alla produzione, usare lo strumento di compilazione disponibile all'indirizzo https://modernizr.com per selezionare solo i test necessari.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
-            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootbox.min.js",
-                      "~/Scripts/bootstrap.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      //"~/Content/bootstrap-lumen.css",
                       "~/Content/bootstrap-grid.css",
                       "~/Content/font-awesome.css",
-                      //"~/Content/bootstrap-theme.css",
-                      //"~/Content/bootstrap-lumen.css",
+                      "~/Content/bootstrap-theme.css",
+                      "~/Content/DataTables/css/jquery.dataTables.css",
+                      "~/Content/DataTables/css/dataTables.bootstrap.css",
+                      "~/Content/typeahead.css",
                       //"~/Content/w3.css",
                       "~/Content/site.css"));
 

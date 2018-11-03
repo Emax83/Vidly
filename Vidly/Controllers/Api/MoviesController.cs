@@ -21,9 +21,15 @@ namespace Vidly.Controllers.Api
 
         //GET /API/customers/GetCustomers
         [HttpGet]
-        public IEnumerable<Movie> GetMovies()
+        public IHttpActionResult GetMovies(string query = null)
         {
-            return _movieService.GetMovies();
+            var movies = _movieService.GetMovies();
+            movies = movies.Where(m => m.NumberAvailable > 0);
+
+            if (!string.IsNullOrWhiteSpace(query))
+                movies = movies.Where(m => m.Name.Contains(query));
+
+            return Ok(movies);
         }
 
         //GET /API/customers/GetCustomer

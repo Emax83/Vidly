@@ -18,8 +18,6 @@
 
     @Scripts.Render("~/bundles/modernizr")
     @Styles.Render("~/Content/css")
-    
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
 
     @RenderSection("head", required: false)
 
@@ -40,11 +38,9 @@
 
     @Html.Partial("_Footer")
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/globalize")
+    @Scripts.Render("~/bundles/lib")
     @Scripts.Render("~/bundles/jqueryval")
-    @Scripts.Render("~/bundles/datatables")
+    @Scripts.Render("~/bundles/globalize")
 
 
     @{

@@ -24,6 +24,7 @@ namespace Vidly
             container.RegisterType<ICustomerService, EFCustomerService>();
             container.RegisterType<IMovieService, EFMovieService>();
             container.RegisterType<IUserService, EFUserService>();
+            //container.RegisterType<IRentalService, EFRentalService>();
 
             config.DependencyResolver = new UnityResolver(container);
 

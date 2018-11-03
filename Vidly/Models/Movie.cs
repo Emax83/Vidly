@@ -30,8 +30,12 @@ namespace Vidly.Models
         public decimal Price { get; set; }
 
         [Required]
-        [Display(Name = "Availability")]
+        [Display(Name = "Stock")]
         public int NumberInStock { get; set; }
+
+        [Required]
+        [Display(Name = "Available")]
+        public int NumberAvailable { get; set; }
 
         [Required]
         [Range(1,1000,ErrorMessage ="Select genre")]
