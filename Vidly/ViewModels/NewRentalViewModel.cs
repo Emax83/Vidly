@@ -10,13 +10,13 @@ namespace Vidly.ViewModels
     {
         public int Id { get; set; }
         public int CustomerId { get; set; }
-        public List<int> MoviesIds { get; set; }
+        public List<int> MovieIds { get; set; }
         public DateTime DateRented { get; set; }
         public DateTime? DateReturned { get; set; }
 
         public NewRentalViewModel()
         {
-            MoviesIds = new List<int>();
+            MovieIds = new List<int>();
         }
     }
 }

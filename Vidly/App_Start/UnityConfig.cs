@@ -41,6 +41,8 @@ namespace Vidly
             container.RegisterType<IMovieService, EFMovieService>(new InjectionConstructor(dbContext));
             container.RegisterType<ICustomerService, EFCustomerService>(new InjectionConstructor(dbContext));
             container.RegisterType<IUserService, EFUserService>(new InjectionConstructor(dbContext));
+            container.RegisterType<IRentalService, RentalService>(new InjectionConstructor(dbContext));
+
         }
 
 

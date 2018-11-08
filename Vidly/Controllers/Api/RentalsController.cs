@@ -10,10 +10,10 @@ using Vidly.Infrastracture;
 
 namespace Vidly.Controllers.Api
 {
-    public class NewRentalsController : ApiController
+    public class RentalsController : ApiController
     {
         private readonly ApplicationDbContext _dbContext;
-        public NewRentalsController(ApplicationDbContext context)
+        public RentalsController(ApplicationDbContext context)
         {
             _dbContext = context;
         }
@@ -21,7 +21,7 @@ namespace Vidly.Controllers.Api
         [HttpPost]
         public IHttpActionResult CreateNewRental(NewRentalViewModel newRental)
         {
-            if (newRental.MoviesIds.Count == 0)
+            if (newRental.MovieIds.Count == 0)
                 return BadRequest("No movie to rent");
 
             var customer = _dbContext.Customers.Single(c => c.Id == newRental.CustomerId);
@@ -29,9 +29,9 @@ namespace Vidly.Controllers.Api
             if (customer == null)
                 return BadRequest("Invalid customer id");
 
-            var movies = _dbContext.Movies.Where(m => newRental.MoviesIds.Contains(m.Id)).ToList();
+            var movies = _dbContext.Movies.Where(m => newRental.MovieIds.Contains(m.Id)).ToList();
 
-            if (movies.Count!=newRental.MoviesIds.Count)
+            if (movies.Count!=newRental.MovieIds.Count)
                 return BadRequest("One or more movies invalid"); 
 
             foreach (var movie in movies)

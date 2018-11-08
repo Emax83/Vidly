@@ -1,93 +1,39 @@
-﻿@model dynamic
+﻿@model IEnumerable<Vidly.Models.Rental>
 
 @{
-    ViewBag.Title = "New rental Form";
+    ViewBag.Title = "Index";
 }
 
-<h2>New rental Form</h2>
+<h2>Index</h2>
 
-<form>
-    <div class="form-group">
-        <label>Customer</label>
-        <div class="tt-container">
-            <input type="text" class="form-control" id="customer" />
-        </div>
-    </div>
-    <div class="form-group">
-        <label>Movie</label>
-        <div class="tt-container">
-            <input type="text" class="form-control" id="movie" />
-        </div>
-     </div>
-    <div class="row">
-        <div class="col-sm-4">
-            <ul id="movies" class="list-group"></ul>
-        </div>
-    </div>
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </div>
-</form>
-@section scripts{
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.DateRented)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateReturned)
+        </th>
+        <th></th>
+    </tr>
 
-    <script>
-        $(document).ready(function () {
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateRented)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateReturned)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
 
-            var vm = {
-                movieIds:[]
-            };
-
-            // constructs the suggestion engine
-            var customers = new Bloodhound({
-                datumTokenizer: Bloodhound.tokenizers.whitespace,
-                queryTokenizer: Bloodhound.tokenizers.whitespace,
-                // `states` is an array of state names defined in "The Basics"
-                remote: {
-                    url: '/api/GetCustomers?query=%QUERY',
-                    wildcard: '%QUERY'
-                }
-            });
-
-            var movies = new Bloodhound({
-                datumTokenizer: Bloodhound.tokenizers.whitespace,
-                queryTokenizer: Bloodhound.tokenizers.whitespace,
-                // `states` is an array of state names defined in "The Basics"
-                remote: {
-                    url: '/api/GetMovies?query=%QUERY',
-                    wildcard: '%QUERY'
-                }
-            });
-
-
-            $('#customer').typeahead({
-                highlight: true,
-                minLength: 3
-            },
-                {
-                    name: 'customers',
-                    display: 'name',
-                    source: customers
-                }).on("typehead:select", function (e, customer) {
-                    vm.customerId = customer.id;
-                });
-        });
-
-        $('#movie').typeahead({
-            highlight: true,
-            minLength: 3
-        },
-            {
-                name: 'movies',
-                display: 'name',
-                source: movies
-            }).on("typehead:select", function (e, customer) {
-                $("#movies").append("<li class='last-group-item'>" + movie.name + "</li>");
-                $('#movie').typeahead("val", "");
-                vm.movieIds.push(movie.id);
-            });
-        });
-
-
-    </script>
-
-    }
+</table>

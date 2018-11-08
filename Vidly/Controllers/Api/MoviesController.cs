@@ -27,7 +27,7 @@ namespace Vidly.Controllers.Api
             movies = movies.Where(m => m.NumberAvailable > 0);
 
             if (!string.IsNullOrWhiteSpace(query))
-                movies = movies.Where(m => m.Name.Contains(query));
+                movies = movies.Where(m => m.Name.ToLower().Contains(query.ToLower()));
 
             return Ok(movies);
         }

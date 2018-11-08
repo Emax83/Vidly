@@ -26,7 +26,7 @@ namespace Vidly.Controllers.Api
             var customers = _customerService.GetCustomers();
 
             if (!string.IsNullOrWhiteSpace(query))
-                customers = customers.Where(c => c.Name.Contains(query));
+                customers = customers.Where(c => c.Name.ToLower().Contains(query.ToLower()));
 
             return Ok(customers);
         }
