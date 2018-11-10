@@ -21,6 +21,8 @@ namespace Vidly.Controllers
         // GET: Rentals
         public ActionResult Index()
         {
+            
+
             return View();
         }
 

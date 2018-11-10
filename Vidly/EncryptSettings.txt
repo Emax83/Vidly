@@ -1,0 +1,7 @@
+# execute as Administrator in VisualStudio Tools CMD
+
+#encrypt
+c:\Windows\System32\aspnet_regiis -pef "appSettings" "c:\deploy" -prop "DataProtectionConfigurationProvider"
+
+#decrypt
+c:\Windows\System32\aspnet_regiis -pdf "appSettings" "c:\deploy" 

@@ -5,22 +5,22 @@
 
 <h2>New Rental Form</h2>
 
-<form name="newrental" id="newRental">
+<form name="newrental" id="newrental">
     <div class="form-group">
         <label>Customer</label>
         <div class="tt-container">
-            <input type="text" value="" class="form-control" id="customer" name="customer" />
+            <input id="customer" name="customer" type="text" value="" data-rule-validcustomer="true" required  class="form-control" />
         </div>
     </div>
     <div class="form-group">
         <label>Movie</label>
         <div class="tt-container">
-            <input type="text" value="" class="form-control" id="movie" name="movie" />
+            <input id="movie" name="movie" type="text" value="" data-rule-atleastonemovie="true" class="form-control"  />
         </div>
     </div>
     <div class="form-group">
         <div class="">
-            <ul class="list-group" name="movies" id="movies" style="max-width: 280px;"></ul>
+            <ul class="list-group"  name="movies" id="movies" style="max-width: 280px;"></ul>
         </div>
     </div>
     <div class="form-group">
@@ -29,7 +29,7 @@
 </form>
 
 @section scripts{
-    
+    @Scripts.Render("~/bundles/jqueryval")
     <script>
 
         $(document).ready(function () {
@@ -86,22 +86,64 @@
                         console.log(JSON.stringify(vm.movieIds));
                     });
 
-                $("#newRental").submit(function (e) {
-                    e.preventDefault();
-                    $.ajax({
-                        url: "/api/rentals",
-                        method: "post",
-                        data: vm
-                    })
-                        .done(function () {
-                            console.log("done");
-                            toastr.success("Success");
+
+                $.validator.addMethod("validcustomer", function () {
+                    return vm.customerId && vm.customerId !== 0;
+                }, "Please select a valid customer");
+
+                $.validator.addMethod("atleastonemovie", function () {
+                    return vm.movieIds && vm.movieIds.length>0;
+                }, "At least one movie");
+                
+
+                //validate the form
+                var validator = $("#newrental").validate({
+                    submitHandler: function () {
+                        //e.preventDefault();
+
+                        $.ajax({
+                            url: "/api/rentals",
+                            method: "post",
+                            data: vm
                         })
-                        .fail(function () {
-                            console.log("fail");
-                            toastr.error("Error");
-                        });
+                            .done(function () {
+                                console.log("done");
+                                toastr.success("Success");
+
+                                //clear form.
+                                $("#customer").typeahead("val", "");
+                                $("#movie").typeahead("val", "");
+                                $("#movies").empty();
+
+                                vm = { movieIds: [] };
+                                validator.resetForm();
+
+                            })
+                            .fail(function () {
+                                console.log("fail");
+                                toastr.error("Error");
+                            });
+                        //return false becauso not submit standard html form.
+                        return false;
+                    }
                 });
+
+                //$("#newrental").submit(function (e) {
+                //    e.preventDefault();
+                //    $.ajax({
+                //        url: "/api/rentals",
+                //        method: "post",
+                //        data: vm
+                //    })
+                //        .done(function () {
+                //            console.log("done");
+                //            toastr.success("Success");
+                //        })
+                //        .fail(function () {
+                //            console.log("fail");
+                //            toastr.error("Error");
+                //        });
+                //});
 
             }
             catch (err) {

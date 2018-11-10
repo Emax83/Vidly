@@ -31,11 +31,11 @@ table,th,td{
     margin:0;
 }
 
-.field-validation-error{
+.field-validation-error, label.error{
     color:red;
 }
 
-.input-validation-error {
+.input-validation-error, input.error {
     border: 2px solid red;
     border-radius: 3px;
 }

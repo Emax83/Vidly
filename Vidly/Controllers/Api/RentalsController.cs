@@ -12,10 +12,10 @@ namespace Vidly.Controllers.Api
 {
     public class RentalsController : ApiController
     {
-        private readonly ApplicationDbContext _dbContext;
-        public RentalsController(ApplicationDbContext context)
+        private readonly IRentalService _service;
+        public RentalsController(IRentalService service)
         {
-            _dbContext = context;
+            _service = service;
         }
 
         [HttpPost]
@@ -24,51 +24,33 @@ namespace Vidly.Controllers.Api
             if (newRental.MovieIds.Count == 0)
                 return BadRequest("No movie to rent");
 
-            var customer = _dbContext.Customers.Single(c => c.Id == newRental.CustomerId);
-
-            if (customer == null)
-                return BadRequest("Invalid customer id");
-
-            var movies = _dbContext.Movies.Where(m => newRental.MovieIds.Contains(m.Id)).ToList();
-
-            if (movies.Count!=newRental.MovieIds.Count)
-                return BadRequest("One or more movies invalid"); 
-
-            foreach (var movie in movies)
+            try
             {
-                if (movie.NumberAvailable == 0)
-                    return BadRequest("Movie not available");
+                _service.AddNewRental(newRental);
 
-                movie.NumberAvailable--;
-
-                var rental = new Rental
-                {
-                    Customer = customer,
-                    Movie = movie,
-                    DateRented = DateTime.UtcNow
-                };
-
-                _dbContext.Rentals.Add(rental);
+                return Ok("");
             }
-
-            _dbContext.SaveChanges();
-
-            return Ok("");
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
 
         }
 
         [HttpPost]
         public IHttpActionResult EndRental(int rentalId)
         {
-            var rental = _dbContext.Rentals.Single(r => r.Id == rentalId);
-            rental.DateReturned = DateTime.UtcNow;
+            try
+            {
+                _service.EndRental(rentalId);
 
-            var movie = _dbContext.Movies.Single(m => m.Id == rental.Movie.Id);
-            movie.NumberAvailable++;
+                return Ok("");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
 
-            _dbContext.SaveChanges();
-
-            return Ok("");
         }
 
     }
