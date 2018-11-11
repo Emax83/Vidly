@@ -93,4 +93,15 @@ table,th,td{
         text-align: center;
     }
 
+..dataTables_paginate{
+    float:right;
+    right:0px;
+}
 
+.dataTables_length, .dataTables_filter, .dataTables_info, .dataTables_paginate {
+    font-size: smaller;
+}
+.dataTables[*] > .form-control{
+    padding:3px;
+    font-size:smaller;
+}

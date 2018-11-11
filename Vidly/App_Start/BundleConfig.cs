@@ -19,20 +19,20 @@ namespace Vidly
                         ));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                        //"~/Scripts/jquery.validate*"));
-                        "~/Scripts/jquery.validate.js",
-                        "~/Scripts/jquery.validate.unobtrusive.js"
+                        "~/Scripts/jquery.validate*"
+                        //"~/Scripts/jquery.validate.js",
+                        //"~/Scripts/jquery.validate.unobtrusive.js"
                         ));
 
             //http://www.aspitalia.com/script/1218/Impostare-Culture-Client-Side-Validation-ASP.NET-MVC.aspx
-            bundles.Add(new ScriptBundle("~/bundles/globalize").Include(
-                        "~/Scripts/cldr.js",
-                        "~/Scripts/cldr/event.js",
-                        "~/Scripts/cldr/supplemental.js",
-                        "~/Scripts/globalize.js",
-                        "~/Scripts/globalize/number.js",
-                        "~/Scripts/globalize/date.js"
-                        ));
+            //bundles.Add(new ScriptBundle("~/bundles/globalize").Include(
+            //            "~/Scripts/cldr.js",
+            //            "~/Scripts/cldr/event.js",
+            //            "~/Scripts/cldr/supplemental.js",
+            //            "~/Scripts/globalize.js",
+            //            "~/Scripts/globalize/number.js",
+            //            "~/Scripts/globalize/date.js"
+            //            ));
 
 
             // Utilizzare la versione di sviluppo di Modernizr per eseguire attività di sviluppo e formazione. Successivamente, quando si è
@@ -42,10 +42,9 @@ namespace Vidly
 
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      //"~/Content/w3.css",
                       "~/Content/bootstrap.css",
-                      //"~/Content/bootstrap-lumen.css",
                       "~/Content/bootstrap-grid.css",
+                      "~/Content/bootstrap-theme.css",
                       "~/Content/font-awesome.css",
                       "~/Content/bootstrap-theme.css",
                       "~/Content/DataTables/css/jquery.dataTables.css",

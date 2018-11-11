@@ -20,6 +20,7 @@ namespace Vidly
             //    defaults: new { controller="movies",action="ByReleaseDate"},
             //    constraints: new {year = @"\d{4}", month=@"\d{2}"}
             //    );
+            
             //sostituito dagli attributi nel controller: 
             routes.MapMvcAttributeRoutes();
 
