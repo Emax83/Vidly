@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using Vidly.Infrastracture;
+using Vidly.ViewModels;
+using Vidly.Infrastracture.Authentication;
 
 namespace Vidly.Controllers
 {
@@ -31,23 +34,55 @@ namespace Vidly.Controllers
         }
 
         [HttpGet]
-        public ActionResult Login()
+        public ActionResult Login(string returnUrl)
         {
+            ViewData["returnUrl"] = returnUrl;
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(FormCollection form)
+        public ActionResult Login(LoginViewModel vm,string returnUrl)
         {
+             if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (string.IsNullOrEmpty(vm.Email) || string.IsNullOrEmpty(vm.Password))
+                    {
+                        ModelState.AddModelError("", "Insert credentials");
+                        return View();
+                    }
 
-            return RedirectToAction("Index","Home", new { area = "" });
+                    var user = _userService.Login(vm.Email, vm.Password);
+                    if (user == null)
+                    {
+                        ModelState.AddModelError("", "Invalid credentials");
+                        return View();
+                    }
+
+                    AuthenticationManager.Logon(user, vm.RememberMe);
+
+                    if (!string.IsNullOrEmpty(returnUrl))
+                        return Redirect(returnUrl);
+
+                    return RedirectToAction("Index", "Home", new { area = "" });
+                }
+                catch(Exception ex)
+                {
+                    AddError("Login Error: " + ex.Message);
+                }
+
+               
+            }
+            return View();
         }
+            
 
         [HttpGet]
         public ActionResult Logout()
         {
-
+            AuthenticationManager.Logoff();
             return RedirectToAction("Index", "Home",new { area=""});
         }
 

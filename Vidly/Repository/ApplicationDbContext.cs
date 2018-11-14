@@ -6,7 +6,7 @@ using System.Linq;
 using System.Web;
 using Vidly.Models;
 
-namespace Vidly.Infrastracture
+namespace Vidly.Repository
 {
     //gateway to database
     public class ApplicationDbContext : DbContext //IdentityDbContext<ApplicationUser>
@@ -16,6 +16,8 @@ namespace Vidly.Infrastracture
         public DbSet<MembershipType> MembershipTypes { get; set; }
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Rental> Rentals { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
 
         public ApplicationDbContext()
             : base("DbConnection")//, throwIfV1Schema: false)

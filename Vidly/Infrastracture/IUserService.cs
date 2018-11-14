@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Vidly.Models;
 
 namespace Vidly.Infrastracture
 {
     public interface IUserService
     {
+        User FindByMail(string email);
+        User Login(string username, string password);
     }
 }

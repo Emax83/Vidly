@@ -9,8 +9,7 @@ using Vidly.ViewModels;
 
 namespace Vidly.Controllers
 {
-    //[Authorize(Roles = "admin")]
-    [AllowAnonymous]
+    [Authorize(Roles = "admin")]
     public class CustomersController : BaseController
     {
 
@@ -142,7 +141,7 @@ namespace Vidly.Controllers
                 if (file.ContentLength > 0)
                 {
                     string _FileName = System.IO.Path.GetFileName(file.FileName);
-                    string _path = System.IO.Path.Combine(Server.MapPath("~/TempFiles"), HttpContext.CurrentUser().UserId.ToString(), _FileName);
+                    string _path = System.IO.Path.Combine(Server.MapPath("~/TempFiles"), "1", _FileName);// HttpContext.CurrentUser().UserId.ToString(), _FileName);
                     file.SaveAs(_path);
                 }
                 AddMessage("File Uploaded Successfully!");

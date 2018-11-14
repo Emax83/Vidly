@@ -70,7 +70,7 @@ namespace Vidly.Controllers
         }
 
         // Movies/Create
-        [Authorize]
+        [Authorize(Roles ="Admin")]
         [HttpGet]
         public ActionResult Create()
         {
@@ -83,7 +83,7 @@ namespace Vidly.Controllers
         }
 
         // Movies/Edit/1
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public ActionResult Edit(int id)
         {
@@ -102,7 +102,7 @@ namespace Vidly.Controllers
 
         //https://haacked.com/archive/2010/07/16/uploading-files-with-aspnetmvc.aspx/
         //https://cmatskas.com/upload-files-in-asp-net-mvc-with-javascript-and-c/
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(MovieViewModel viewModel)//, IEnumerable<HttpPostedFileBase> files)
@@ -161,7 +161,7 @@ namespace Vidly.Controllers
         }
 
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ActionName("Delete")]
@@ -188,6 +188,7 @@ namespace Vidly.Controllers
         }
 
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [AllowAnonymous]
         public JsonResult UploadFile(int id, string code)
@@ -219,6 +220,7 @@ namespace Vidly.Controllers
                 }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [AllowAnonymous]
         public JsonResult DeleteFile(int id, string code, string filename)

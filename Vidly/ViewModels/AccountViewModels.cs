@@ -45,14 +45,14 @@ namespace Vidly.ViewModels
     public class ForgotViewModel
     {
         [Required]
-        [Display(Name = "Posta elettronica")]
+        [Display(Name = "Email")]
         public string Email { get; set; }
     }
 
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Posta elettronica")]
+        [Display(Name = "Email")]
         [EmailAddress]
         public string Email { get; set; }
 

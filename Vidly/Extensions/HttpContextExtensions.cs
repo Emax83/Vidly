@@ -1,4 +1,5 @@
 ﻿using Vidly.Infrastracture;
+using Vidly.Models;
 
 namespace Vidly
 {

@@ -39,9 +39,19 @@ table,th,td{
     border: 2px solid red;
     border-radius: 3px;
 }
+.validation-summary-errors {
+    color: red;
+    padding: 5px;
+    background-color: #ffd9d9;
+    border: 1px solid red;
+}
 
-.navbar{
-    padding:5px;
+.validation-summary-errors ul {
+    
+}
+
+.navbar {
+    padding: 5px;
 }
 
 .navbar-toggler {

@@ -2,6 +2,8 @@
 using System.Web.Optimization;
 using System.Web.Routing;
 using System.Web.Http;
+using Vidly.Infrastracture.Authentication;
+
 
 namespace Vidly
 {
@@ -18,10 +20,12 @@ namespace Vidly
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
 
-        //protected void Application_BeginRequest()
-        //{
-        //    System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture("it-IT");
-        //}
-
+        
+        protected void Application_PostAuthenticateRequest()
+        {
+            AuthenticationManager.ReadCurrentUser();
+        }
     }
+
+    
 }

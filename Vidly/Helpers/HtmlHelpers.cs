@@ -10,22 +10,21 @@ namespace Vidly
 {
     public static class HtmlHelpers
     {
-        public static bool HasPermission(this HtmlHelper helper,string permission)
-        {
-            if (HttpContext.Current.User is UserPrincipal)
-            {
-                UserPrincipal user = (UserPrincipal)HttpContext.Current.User;
-                return user.HasPermission(permission);
-            }
-            return false;
-        }
+        //public static bool HasPermission(this HtmlHelper helper,string permission)
+        //{
+        //    if (HttpContext.Current.User is UserPrincipal)
+        //    {
+        //        UserPrincipal user = (UserPrincipal)HttpContext.Current.User;
+        //        return user.HasPermission(permission);
+        //    }
+        //    return false;
+        //}
 
         public static UserPrincipal CurrentUser(this HtmlHelper html)
         {
             if (HttpContext.Current.User is UserPrincipal)
-            {
                 return (UserPrincipal)HttpContext.Current.User;
-            }
+            
             return null;
         }
 
@@ -36,5 +35,6 @@ namespace Vidly
             token = string.Format(@"{0}:""{1}""","__RequestVerificationToken", token);
             return new MvcHtmlString(token);
         }
+
     }
 }

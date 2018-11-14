@@ -232,18 +232,32 @@
     <Compile Include="Controllers\RentalsController.cs" />
     <Compile Include="Extensions\HttpContextExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Filters\ApplicationFilter.cs" />
+    <Compile Include="Filters\CustomAuthorizeAttribute.cs" />
+    <Compile Include="Filters\CustomHandleErrorInfo.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\HtmlHelpers.cs" />
     <Compile Include="Helpers\Mapper.cs" />
     <Compile Include="Helpers\Min18YearsValidation.cs" />
-    <Compile Include="Infrastracture\ApplicationDbContext.cs" />
     <Compile Include="Infrastracture\Authentication\AuthenticationManager.cs" />
+    <Compile Include="Infrastracture\Authentication\UserPrincipal.cs" />
+    <Compile Include="Migrations\201811131356257_User.cs" />
+    <Compile Include="Migrations\201811131356257_User.Designer.cs">
+      <DependentUpon>201811131356257_User.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811131537313_Roles.cs" />
+    <Compile Include="Migrations\201811131537313_Roles.Designer.cs">
+      <DependentUpon>201811131537313_Roles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811131544463_USerRoles.cs" />
+    <Compile Include="Migrations\201811131544463_USerRoles.Designer.cs">
+      <DependentUpon>201811131544463_USerRoles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UserRole.cs" />
+    <Compile Include="Repository\ApplicationDbContext.cs" />
     <Compile Include="Infrastracture\BaseController.cs" />
     <Compile Include="Infrastracture\DBHelper.cs" />
-    <Compile Include="Infrastracture\Authentication\UserPrincipal.cs" />
     <Compile Include="Infrastracture\IRentalService.cs" />
     <Compile Include="Infrastracture\IUserService.cs" />
     <Compile Include="Migrations\201810301015399_ImagesCustomerMovies.cs" />
@@ -270,7 +284,7 @@
     <Compile Include="Migrations\201811031751307_NumberAvailable.Designer.cs">
       <DependentUpon>201811031751307_NumberAvailable.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\ApplicationUser.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Models\Rental.cs" />
     <Compile Include="Models\Settings.cs" />
     <Compile Include="Repository\DBMovieService.cs" />
@@ -533,6 +547,7 @@
     <Folder Include="Content\Images\favicons\" />
     <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="TempFiles\" />
+    <Folder Include="Views\Base\" />
     <Folder Include="Views\Default\" />
   </ItemGroup>
   <ItemGroup>
@@ -588,6 +603,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811031751307_NumberAvailable.resx">
       <DependentUpon>201811031751307_NumberAvailable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811131356257_User.resx">
+      <DependentUpon>201811131356257_User.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811131537313_Roles.resx">
+      <DependentUpon>201811131537313_Roles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811131544463_USerRoles.resx">
+      <DependentUpon>201811131544463_USerRoles.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
