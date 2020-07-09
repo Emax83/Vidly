@@ -14,68 +14,7 @@ using System.Web.Security;
 
 namespace Vidly
 {
-    //public class CustomAuthorizeAttribute : AuthorizeAttribute
-    //{
-    //    //public string Application { get; set; }
-    //    //public string[] Roles { get; set; }
-
-    //    public override void OnAuthorization(AuthorizationContext filterContext)
-    //    {
-    //        if (filterContext == null)
-    //        {
-    //            throw new ArgumentNullException("filterContext");
-    //        }
-
-    //        //if (!filterContext.HttpContext.User.Identity.IsAuthenticated)
-    //        //{
-    //        //    // auth failed, redirect to login page
-    //        //    filterContext.Result = new HttpUnauthorizedResult();
-    //        //    return;
-    //        //}
-                       
-
-    //        string url = filterContext.HttpContext.Request.Url.Query;
-    //        if (HttpContext.Current.User is UserPrincipal)
-    //        {
-    //            UserPrincipal p = ((UserPrincipal)HttpContext.Current.User);
-    //            //User user = p.User;
-    //            if (!p.IsInRole(Roles))
-    //            {
-    //                filterContext.Result = new RedirectToRouteResult(
-    //                    new System.Web.Routing.RouteValueDictionary(
-    //                        new { controller = "Errors", action = "Unauthorized" }));
-    //                return;
-    //            }
-    //        }
-    //        //else
-    //        //{
-    //        //    filterContext.Result = new RedirectToRouteResult(
-    //        //    new System.Web.Routing.RouteValueDictionary(
-    //        //        new { controller = "Account", action = "Login", ReturnUrl=url }));
-    //        //    return;
-    //        //}
-    //        base.OnAuthorization(filterContext);
-
-    //    }
-
-    //    protected override bool AuthorizeCore(HttpContextBase httpContext)
-    //    {
-    //        var Isauthorized = base.AuthorizeCore(httpContext);
-    //        if (!Isauthorized)
-    //            return false;
-
-    //        UserPrincipal user = httpContext.CurrentUser();
-    //        if (user != null)
-    //        {
-    //            return user.IsInRole(base.Roles);
-    //        }
-
-    //        return false;
-
-    //    }
-    //}
-
-    public class CustomAuthAttribute : AuthorizeAttribute, IAuthenticationFilter
+    public class CustomAuthorizeAttribute : AuthorizeAttribute, IAuthenticationFilter
     {
         public void OnAuthentication(AuthenticationContext filterContext)
         {
@@ -112,13 +51,14 @@ namespace Vidly
             {
                 UserPrincipal p = ((UserPrincipal)HttpContext.Current.User);
                 //User user = p.User;
-                if (!p.IsInRole(Roles))
+                if (!p.IsInRole(Roles) || !p.IsInUser(Users))
                 {
                     filterContext.Result = new RedirectToRouteResult(
                         new System.Web.Routing.RouteValueDictionary(
                             new { controller = "Errors", action = "Unauthorized" }));
                     return;
                 }
+
             }
             base.OnAuthorization(filterContext);
 

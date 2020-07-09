@@ -8,7 +8,7 @@ using Vidly.Infrastracture;
 namespace Vidly.Controllers
 {
     [AllowAnonymous]
-    public class RentalsController : Controller
+    public class RentalsController : BaseController
     {
 
         private readonly IRentalService _service;

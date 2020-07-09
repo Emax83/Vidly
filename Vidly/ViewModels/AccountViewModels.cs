@@ -63,6 +63,11 @@ namespace Vidly.ViewModels
 
         [Display(Name = "Memorizza account")]
         public bool RememberMe { get; set; }
+
+        [Display(Name = "Indirizzo di origine")]
+        public string ReturnUrl { get; set; }
+
+
     }
 
     public class RegisterViewModel

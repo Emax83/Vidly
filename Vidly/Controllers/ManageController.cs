@@ -6,7 +6,7 @@ using System.Web.Mvc;
     
 namespace Vidly.Controllers
 {
-    [CustomAuth(Roles = "SuperAdmin")]
+    [Authorize(Roles = "SuperAdmin")]
     public class ManageController : BaseController
     {
         // GET: Manage

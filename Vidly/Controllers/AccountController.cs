@@ -42,9 +42,9 @@ namespace Vidly.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(LoginViewModel vm,string returnUrl)
+        public ActionResult Login(LoginViewModel vm)
         {
-             if (ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 try
                 {
@@ -63,8 +63,8 @@ namespace Vidly.Controllers
 
                     AuthenticationManager.Logon(user, vm.RememberMe);
 
-                    if (!string.IsNullOrEmpty(returnUrl))
-                        return Redirect(returnUrl);
+                    if (!string.IsNullOrEmpty(vm.ReturnUrl))
+                        return Redirect(vm.ReturnUrl);
 
                     return RedirectToAction("Index", "Home", new { area = "" });
                 }
@@ -74,6 +74,10 @@ namespace Vidly.Controllers
                 }
 
                
+            }
+            else
+            {
+                ModelState.AddModelError("","Compilare tutte i campi");
             }
             return View();
         }

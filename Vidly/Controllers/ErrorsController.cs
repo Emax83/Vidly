@@ -7,12 +7,13 @@ using System.Web.Mvc;
 namespace Vidly.Controllers
 {
     [AllowAnonymous]
-    public class ErrorsController : Controller
+    public class ErrorsController : BaseController
     {
         // GET: Errors
         public ActionResult NotFound(string aspxerrorpath)
         {
-            return View(aspxerrorpath);
+            ViewBag.aspxerrorpath = aspxerrorpath;
+            return View();
         }
 
         public ActionResult Unauthorized()

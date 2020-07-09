@@ -35,6 +35,12 @@ namespace Vidly.Infrastracture
             return roles.Any(r => this.Roles.Contains(r.ToUpper()));
         }
 
+        public bool IsInUser(string user)
+        {
+            var users = user.Split(',');
+            return users.Any(r => this.User.FullName.ToUpper().Contains(r.ToUpper()));
+        }
+
         //public bool HasPermission(string permission)
         //{
         //    var permissions = permission.Split(',');
